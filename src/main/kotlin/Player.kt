@@ -1,5 +1,8 @@
 import kotlin.math.max
 
+const val EngineDeltaTime: Float = 0.0166667F
+const val maxFall: Float = 160f
+
 data class Madeline(
     var x: Float,
     var xMovementCounter: Float = 0F, //should always be between 0.5, this could lead to bugs when initializing custom positions
@@ -10,8 +13,6 @@ data class Madeline(
     var xSpeed: Float,
     var ySpeed: Float,
     var state: PlayerState,
-
-
 ) {
     var wallSlideTimer = 1.2F
 

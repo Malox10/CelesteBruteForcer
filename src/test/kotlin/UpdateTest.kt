@@ -91,13 +91,26 @@ class GrabTest {
 
 class IntegrationTest() {
     @Test
-    fun moveMadeline() {
+    fun moveMadeline3Steps() {
         val madeline = createYMadeline(345F, 0.400036633015F, 24.000047683716F, PlayerState.StClimb)
         listOf(Input.None, Input.Right, Input.Grab).forEachIndexed { index, input ->
             println("input ${index + 1}:")
             madeline.update(input)
             madeline.printExact()
         }
+    }
+
+    @Test
+    fun moveMadeline6Right() {
+        val madeline = createYMadeline(345F, 0.400036633015F, 24.000047683716F, PlayerState.StClimb)
+        listOf(Input.Right, Input.Right, Input.Right, Input.Right, Input.Right, Input.Right).forEachIndexed { index, input ->
+            println("input ${index + 1}:")
+            madeline.update(input)
+            madeline.printExact()
+        }
+
+        val expected = createYMadeline(347F, 0.790782570839F, 27.777772903442F, PlayerState.StNormal)
+        assertEquals(expected, madeline)
     }
 }
 

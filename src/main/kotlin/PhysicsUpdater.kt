@@ -1,5 +1,3 @@
-import kotlin.math.max
-import kotlin.math.round
 import kotlin.math.roundToInt
 
 fun Madeline.update(input: Input) {
@@ -10,7 +8,6 @@ fun Madeline.update(input: Input) {
     }
 
     this.updatePosition()
-
 }
 
 fun Madeline.updatePosition() {
@@ -23,8 +20,6 @@ fun Madeline.updatePosition() {
         this.y += num
     }
 }
-
-
 
 fun handleGrab(madeline: Madeline) {
     when(madeline.state) {
