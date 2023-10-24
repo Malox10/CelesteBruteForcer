@@ -1,9 +1,10 @@
 import org.junit.jupiter.api.Test
+import kotlin.math.sign
 import kotlin.test.assertEquals
 
 fun createYMadeline(y: Float, ySubpixel: Float, ySpeed: Float, state: PlayerState): Madeline {
-    val trueYSubPixel = if(ySubpixel > 0.5) ySubpixel - 1 else ySubpixel
-    val trueYPixel = if(ySubpixel > 0.5) y + 1 else y
+    val trueYSubPixel = if (ySubpixel > 0.5) sign(y) * (ySubpixel - 1) else ySubpixel
+    val trueYPixel = if (ySubpixel > 0.5) y + sign(y) else y
     return Madeline(0F, 0F, trueYPixel, trueYSubPixel, 0F, ySpeed, state)
 }
 
@@ -103,7 +104,14 @@ class IntegrationTest() {
     @Test
     fun moveMadeline6Right() {
         val madeline = createYMadeline(345F, 0.400036633015F, 24.000047683716F, PlayerState.StClimb)
-        listOf(Input.Right, Input.Right, Input.Right, Input.Right, Input.Right, Input.Right).forEachIndexed { index, input ->
+        listOf(
+            Input.Right,
+            Input.Right,
+            Input.Right,
+            Input.Right,
+            Input.Right,
+            Input.Right
+        ).forEachIndexed { index, input ->
             println("input ${index + 1}:")
             madeline.update(input)
             madeline.printExact()
@@ -111,6 +119,47 @@ class IntegrationTest() {
 
         val expected = createYMadeline(347F, 0.790782570839F, 27.777772903442F, PlayerState.StNormal)
         assertEquals(expected, madeline)
+    }
+
+    @Test
+    fun worldAbyss2Test() {
+        val madeline = createYMadeline(-3701F, 0.838162422180F, 120.000450134277F, PlayerState.StNormal)
+        madeline.yMovementCounter.printAccurate()
+//        madeline.printExact()
+
+        listOf(
+            Input.None,
+            Input.None,
+            Input.Right,
+            Input.Grab,
+            Input.None,
+            Input.None,
+            Input.None,
+            Input.None,
+            Input.Grab,
+            Input.None,
+            Input.None,
+            Input.None,
+            Input.Grab, //faulty
+            Input.None,
+            Input.Grab,
+            Input.None,
+            Input.None,
+            Input.Grab,
+            Input.None,
+            Input.Grab,
+            Input.None,
+            Input.None,
+        ).forEachIndexed { index, input ->
+            madeline.update(input)
+
+            println("input ${index + 1}:")
+            madeline.yMovementCounter.printAccurate()
+            println()
+
+//            madeline.yMovementCounter.printAccurate()
+//            madeline.printExact()
+        }
     }
 }
 

@@ -25,8 +25,16 @@ fun handleGrab(madeline: Madeline) {
     when(madeline.state) {
         PlayerState.StClimb -> {
             madeline.ySpeed = approach(madeline.ySpeed, 00F, 900f * EngineDeltaTime)
+            madeline.state = PlayerState.StClimb
         }
         PlayerState.StNormal -> {
+            //can only grab if falling down or zero speed; then approach maxFall
+            if(madeline.ySpeed < 0F) {
+                madeline.ySpeed = approach(madeline.ySpeed, maxFall, 900f * EngineDeltaTime)
+                madeline.state = PlayerState.StNormal
+                return
+            }
+
             madeline.ySpeed *= 0.2F
             madeline.state = PlayerState.StClimb
             madeline.wallSlideTimer = 1.2F
@@ -38,6 +46,11 @@ fun handleNone(madeline: Madeline) {
     when(madeline.state) {
         PlayerState.StClimb -> {
             madeline.state = PlayerState.StNormal
+
+            //apply liftboost
+            if(yLiftboost != 0F) {
+                madeline.ySpeed += yLiftboost
+            }
         }
         PlayerState.StNormal -> {
             madeline.ySpeed = approach(madeline.ySpeed, maxFall, 900f * EngineDeltaTime)
@@ -50,6 +63,11 @@ fun handleRight(madeline: Madeline) {
     when(madeline.state) {
         PlayerState.StClimb -> {
             madeline.state = PlayerState.StNormal
+
+            //apply liftboost
+            if(yLiftboost != 0F) {
+                madeline.ySpeed += yLiftboost
+            }
         }
         PlayerState.StNormal -> {
             val target = madeline.updateWallSlideTimer()

@@ -29,8 +29,16 @@ data class Madeline(
         val actualYMovementCounter = if(yMovementCounter < 0) yMovementCounter + 1 else yMovementCounter
         val actualY = if(yMovementCounter < 0) y - 1 else y
 
-        println("x: ${actualX.toInt()}" + String.format("%.12f", actualXMovementCounter).toCharArray().map { it }.drop(1).toCharArray().concatToString())
-        println("y: ${actualY.toInt()}" + String.format("%.12f", actualYMovementCounter).toCharArray().map { it }.drop(1).toCharArray().concatToString())
+        val newY = y + yMovementCounter
+        val newYMovementCounter = if(newY < 0) {
+            1F - yMovementCounter
+        } else {
+            yMovementCounter
+        }
+
+        println("double y: ${y.toDouble() + yMovementCounter.toDouble()}")
+        println("x: ${(actualX - actualXMovementCounter).toInt()}" + String.format("%.12f", actualXMovementCounter).toCharArray().map { it }.drop(1).toCharArray().concatToString())
+        println("y: ${newY.toInt()} " + String.format("%.12f", newYMovementCounter))//.toCharArray().map { it }.drop(1).toCharArray().concatToString())
         print("xSpeed: "); xSpeed.printAccurate()
         print("ySpeed: "); ySpeed.printAccurate()
         print("state: "); println(state)
