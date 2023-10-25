@@ -1,6 +1,6 @@
 
 typealias InputSequence = List<Input>
-data class YData(val yPos: Float, val ySubPixel: Float, val ySpeed: Float)
+data class YData(val yPos: Float, val ySubPixel: Float, val ySpeed: Float, val state: PlayerState)
 
 val solutions: MutableMap<YData, Pair<Madeline, InputSequence>> = mutableMapOf()
 val cache: HashSet<YData> = hashSetOf()
@@ -8,7 +8,7 @@ fun simulate(startMadeline: Madeline, target: Target, path: List<Input> = emptyL
     if(startMadeline.frame >= maxDepth) return
     if(startMadeline.y > -2435) return
 
-    val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed)
+    val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed, startMadeline.state)
     if(cache.contains(key)) {
         return
     } else {
