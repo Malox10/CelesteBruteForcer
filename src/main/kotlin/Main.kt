@@ -1,15 +1,21 @@
 import kotlin.math.sign
 
-const val yLiftboost: Float = -40f //set to 0 if no liftboost
+const val maxDepth = 35
 fun main() {
     simulate(
-        createYMadeline(-2453F, -0.016500830650F, 0F, PlayerState.StNormal),
-        Target(-0.080259978771F, -0.080258071423F), //lambda Madeline -> Bool as success filter
-        30
-        )
-    //0.328420996670F
+//        createYMadeline(-2440F, 0.016839504242F, 41.000026702881F, PlayerState.StClimb) { frame ->
+        createYMadeline(-2447F, 0.233488678932F, 39.000022888184F, PlayerState.StClimb) { frame ->
+            when {
+                frame < 20 -> -40F
+                frame == 20 -> -29.990854263306F
+                frame > 20 -> 0F
 
-    //0.32842165
+                else -> error("how?")
+            }
+        },
+//        Target(-0.080259978771F, -0.080258071423F), //lambda Madeline -> Bool as success filter
+        Target(-0.080241680145F, -0.080237865448F), //lambda Madeline -> Bool as success filter
+    )
     solutions.map { it }.sortedBy { it.value.second.size }.forEach { (key, value) ->
         println(key)
         value.first.printExact()
@@ -28,7 +34,6 @@ fun secondWorldAbyssSaveWIP() {
 //        createYMadeline(-3701F, 0.838162422180F, 120.000450134277F, PlayerState.StNormal),
 //        Madeline(0F, 0F, -3701F, 0.838162422180F, 0F, 120.000450134277F, PlayerState.StNormal),
         Target(-0.328422665600F, -0.328420996670F), //lambda Madeline -> Bool as success filter
-        25
     )
 }
 
@@ -36,7 +41,6 @@ fun firstWorldAbyssSave() {
     simulate(
         Madeline(0F, 0F, 345F, 0.400036633015F, 0F, 24.000047683716F, PlayerState.StClimb),
         Target(0.639446F, 0.6397066F), //lambda Madeline -> Bool as success filter
-        20
     )
 }
 
@@ -45,8 +49,8 @@ fun List<Input>.toTasFile(): String {
 
     var counter = 1
     var lastInput: Input = this.first()
-    for(input in this.drop(1)) {
-        if(input == lastInput) {
+    for (input in this.drop(1)) {
+        if (input == lastInput) {
             counter++
         } else {
             output.add("$counter, ${lastInput.TASkey}")
@@ -62,8 +66,14 @@ fun List<Input>.toTasFile(): String {
 
 fun Float.printAccurate() = println(String.format("%.12f", this))
 
-fun createYMadeline(y: Float, ySubpixel: Float, ySpeed: Float, state: PlayerState): Madeline {
+fun createYMadeline(
+    y: Float,
+    ySubpixel: Float,
+    ySpeed: Float,
+    state: PlayerState,
+    yLiftBoost: (Int) -> Float = { 0F },
+): Madeline {
     val trueYSubPixel = if (ySubpixel > 0.5) sign(y) * (ySubpixel - 1) else ySubpixel
     val trueYPixel = if (ySubpixel > 0.5) y + sign(y) else y
-    return Madeline(0F, 0F, trueYPixel, trueYSubPixel, 0F, ySpeed, state)
+    return Madeline(0F, 0F, trueYPixel, trueYSubPixel, 0F, ySpeed, state, yLiftBoost)
 }

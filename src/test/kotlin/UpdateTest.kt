@@ -1,12 +1,5 @@
 import org.junit.jupiter.api.Test
-import kotlin.math.sign
 import kotlin.test.assertEquals
-
-fun createYMadeline(y: Float, ySubpixel: Float, ySpeed: Float, state: PlayerState): Madeline {
-    val trueYSubPixel = if (ySubpixel > 0.5) sign(y) * (ySubpixel - 1) else ySubpixel
-    val trueYPixel = if (ySubpixel > 0.5) y + sign(y) else y
-    return Madeline(0F, 0F, trueYPixel, trueYSubPixel, 0F, ySpeed, state)
-}
 
 class GrabTest {
     @Test
@@ -159,6 +152,128 @@ class IntegrationTest() {
 
 //            madeline.yMovementCounter.printAccurate()
 //            madeline.printExact()
+        }
+    }
+
+    @Test
+    fun liftboostTest() {
+        val madeline = createYMadeline(-2440F, 0.016839504242F, 41.000026702881F, PlayerState.StClimb) { -40F }
+        listOf(Input.None, Input.Grab, Input.None, Input.Grab, Input.Grab, Input.Grab, Input.Grab, Input.Grab, Input.Right, Input.Right, Input.Right, Input.Right, Input. Grab).forEachIndexed { index, input ->
+            println("input ${index + 1}: ${input}")
+            madeline.update(input)
+            madeline.printRaw()
+        }
+    }
+
+    @Test
+    fun debugTest() {
+        val madeline = createYMadeline(-2447F, 0.233488678932F, 39.000022888184F, PlayerState.StClimb) { frame ->
+            when {
+                frame < 20 -> -40F
+                frame == 20 -> -29.990854263306F
+                frame > 20 -> 0F
+
+                else -> error("how?")
+            }
+        }
+
+        listOf(
+            Input.None, Input.None,
+            Input.Right,
+            Input.None,
+            Input.Right, Input.Right,
+            Input.None, Input.None, Input.None, Input.None,
+            Input.Right,
+            Input.None,
+            Input.Right,
+            Input.Grab,
+            Input.None, Input.None, Input.None,
+            Input.Grab,
+            Input.None, Input.None, Input.None, Input.None,
+            Input.Grab,
+            Input.None, Input.None, Input.None,
+            Input.Grab,
+            Input.None,
+            Input.Grab
+        ).forEachIndexed { index, input ->
+            println("input ${index + 1}: ${input}")
+            madeline.update(input)
+            madeline.printRaw()
+        }
+    }
+
+    @Test
+    fun debugTest2() {
+        val madeline = createYMadeline(-2447F, 0.233488678932F, 39.000022888184F, PlayerState.StClimb) { frame ->
+            when {
+                frame < 20 -> -40F
+                frame == 20 -> -29.990854263306F
+                frame > 20 -> 0F
+
+                else -> error("how?")
+            }
+        }
+
+        listOf(
+            Input.None, Input.None,
+            Input.Right, Input.Right,
+            Input.None, Input.None, Input.None, Input.None,
+            Input.Right, Input.Right, Input.Right,
+            Input.None, Input.None,
+            Input.Grab,
+            Input.None, Input.None, Input.None,
+            Input.Grab,
+            Input.None, Input.None, Input.None, Input.None,
+            Input.Grab,
+            Input.None, Input.None, Input.None,
+            Input.Grab,
+            Input.None,
+            Input.Grab,
+        ).forEachIndexed { index, input ->
+            println("input ${index + 1}: ${input}")
+            madeline.update(input)
+            madeline.printRaw()
+        }
+    }
+
+    @Test
+    fun debugTest3() {
+        val madeline = createYMadeline(-2447F, 0.233488678932F, 39.000022888184F, PlayerState.StClimb) { frame ->
+            when {
+                frame == 17 -> 0F
+                frame < 20 -> -40F
+                frame == 20 -> -29.990854263306F
+                frame > 20 -> 0F
+
+                else -> error("how?")
+            }
+        }
+
+        listOf(
+            Input.None, Input.None,
+            Input.Right,
+            Input.None,
+            Input.Right,
+            Input.None, Input.None,
+            Input.Right, Input.Right,
+            Input.None, Input.None,
+            Input.Right,
+            Input.None,
+            Input.Right,
+            Input.None,
+            Input.Grab,
+            Input.None, Input.None, Input.None,
+            Input.Grab,
+            Input.None, Input.None, Input.None,
+            Input.Grab,
+            Input.None,
+            Input.Grab,
+            Input.None, Input.None,
+            Input.Grab,
+        ).forEachIndexed { index, input ->
+            println("input ${index + 1}: ${input}")
+            madeline.update(input)
+            madeline.printRaw()
         }
     }
 }

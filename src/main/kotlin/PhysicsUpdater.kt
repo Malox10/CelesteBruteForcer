@@ -1,6 +1,7 @@
 import kotlin.math.roundToInt
 
 fun Madeline.update(input: Input) {
+    this.frame++
     when(input) {
         Input.Grab -> handleGrab(this)
         Input.None -> handleNone(this)
@@ -48,8 +49,9 @@ fun handleNone(madeline: Madeline) {
             madeline.state = PlayerState.StNormal
 
             //apply liftboost
-            if(yLiftboost != 0F) {
-                madeline.ySpeed += yLiftboost
+            val yLiftBoost = madeline.yLiftboost(madeline.frame)
+            if(yLiftBoost != 0F) {
+                madeline.ySpeed += yLiftBoost
             }
         }
         PlayerState.StNormal -> {
@@ -65,8 +67,9 @@ fun handleRight(madeline: Madeline) {
             madeline.state = PlayerState.StNormal
 
             //apply liftboost
-            if(yLiftboost != 0F) {
-                madeline.ySpeed += yLiftboost
+            val yLiftBoost = madeline.yLiftboost(madeline.frame)
+            if(yLiftBoost != 0F) {
+                madeline.ySpeed += yLiftBoost
             }
         }
         PlayerState.StNormal -> {

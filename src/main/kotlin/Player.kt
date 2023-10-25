@@ -13,9 +13,11 @@ data class Madeline(
     var xSpeed: Float,
     var ySpeed: Float,
     var state: PlayerState,
-) {
-    var wallSlideTimer = 1.2F
 
+    var yLiftboost: (Int) -> Float = { 0F },
+    var frame: Int = 0,
+    var wallSlideTimer: Float = 1.2F,
+) {
     fun updateWallSlideTimer(): Float {
         val target = lerp(160F, 20F, wallSlideTimer / 1.2F)
         wallSlideTimer = max(wallSlideTimer - EngineDeltaTime, 0f)
@@ -38,7 +40,15 @@ data class Madeline(
 
         println("double y: ${y.toDouble() + yMovementCounter.toDouble()}")
         println("x: ${(actualX - actualXMovementCounter).toInt()}" + String.format("%.12f", actualXMovementCounter).toCharArray().map { it }.drop(1).toCharArray().concatToString())
-        println("y: ${newY.toInt()} " + String.format("%.12f", newYMovementCounter))//.toCharArray().map { it }.drop(1).toCharArray().concatToString())
+        println("y: ${newY.toInt()} ySubPixel: " + String.format("%.12f", newYMovementCounter))//.toCharArray().map { it }.drop(1).toCharArray().concatToString())
+        print("xSpeed: "); xSpeed.printAccurate()
+        print("ySpeed: "); ySpeed.printAccurate()
+        print("state: "); println(state)
+    }
+
+    fun printRaw() {
+        println("x: ${x.toInt()}, xMovementCounter: " + String.format("%.12f", xMovementCounter))
+        println("y: ${y.toInt()}, yMovementCounter: " + String.format("%.12f", yMovementCounter))
         print("xSpeed: "); xSpeed.printAccurate()
         print("ySpeed: "); ySpeed.printAccurate()
         print("state: "); println(state)
