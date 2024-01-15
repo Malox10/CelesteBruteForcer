@@ -12,9 +12,12 @@ fun Madeline.update(input: Input) {
 }
 
 fun Madeline.updatePosition() {
-    val moveV = ySpeed * EngineDeltaTime
+    val moveVAmount = ySpeed * EngineDeltaTime
+    this.moveV(moveVAmount)
+}
 
-    this.yMovementCounter += moveV
+fun Madeline.moveV(amount: Float) {
+    this.yMovementCounter += amount
     val num = this.yMovementCounter.toDouble().roundToInt() //MidpointRounding.ToEven can't specify rounding Behaviour
     if (num != 0) {
         this.yMovementCounter -= num.toFloat()
