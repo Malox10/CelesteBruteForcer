@@ -6,7 +6,7 @@ val cache: HashSet<YData> = hashSetOf()
 typealias Solutions = MutableMap<YData, Pair<Madeline, InputSequence>>
 class Simulator() {
     val solutions: Solutions = mutableMapOf()
-    fun simulate(startMadeline: Madeline, targets: List<Target>, path: List<Input> = emptyList()) {
+    fun simulate(startMadeline: Madeline, targets: List<Target>, additionalMoves: List<Madeline.() -> Unit>, path: List<Input> = emptyList()) {
         if (startMadeline.frame >= maxDepth) return
         //if(startMadeline.y > -2435) return
 
@@ -16,17 +16,21 @@ class Simulator() {
         } else {
             cache.add(key)
             for (target in targets) {
-                if (startMadeline.yMovementCounter <= target.upperBound && startMadeline.yMovementCounter >= target.lowerBound
-                    && startMadeline.y == target.pixel
-                ) {
-                    if (path.last() != Input.Grab) {
-                        Unit
+                for (additionalMove in additionalMoves) {
+                    val movedMadeline = startMadeline.copy().also(additionalMove)
+
+                    if (target.contains(movedMadeline.yMovementCounter)
+                        && movedMadeline.y == target.pixel
+                    ) {
+//                        if (path.last() != Input.Grab) {
+//                            Unit
+//                        }
+                        solutions[key] = movedMadeline to path
+                        println(movedMadeline.yMovementCounter)
+                        println(path.toTasFile())
+                        cache.remove(key)
+                        return
                     }
-                    solutions[key] = startMadeline to path
-                    println(startMadeline.yMovementCounter)
-                   // println(path.toTasFile())
-                    cache.remove(key)
-                    return
                 }
             }
         }
@@ -54,7 +58,7 @@ class Simulator() {
             val newMadeline = startMadeline.copy()
             newMadeline.update(input)
             val newPath = path + listOf(input)
-            simulate(newMadeline, targets, newPath)
+            simulate(newMadeline, targets, additionalMoves, newPath)
         }
     }
 }
@@ -62,6 +66,8 @@ class Simulator() {
 class Target(lowerBoundParam: Float, upperBoundParam: Float, val pixel: Float) {
     val upperBound: Float
     val lowerBound: Float
+
+    fun contains(position: Float) = position in lowerBound..upperBound
 
     init {
         upperBound = if(upperBoundParam > 0.5F) upperBoundParam - 1F else upperBoundParam

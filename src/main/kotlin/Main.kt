@@ -6,11 +6,11 @@ fun main() {
     val solutions = simulateAll(
         listOf(
             createYMadeline(-3701F, 0.673947572708F, 120.000450134277F, PlayerState.StNormal) { 0F },
-            createYMadeline(-3701F, 0.548947095871F, 120.000450134277F, PlayerState.StNormal) { 0F },
             createYMadeline(-3702F, 0.923952579498F, 112.500434875488F, PlayerState.StNormal) { 0F },
             createYMadeline(-3703F, -0.048953175544F, 105.000419616699F, PlayerState.StNormal) { 0F },
             createYMadeline(-3703F, -0.298954129219F, 105.000419616699F, PlayerState.StNormal) { 0F },
             createYMadeline(-3703F, -0.173953652382F, 105.000419616699F, PlayerState.StNormal) { 0F },
+            createYMadeline(-3701F, 0.548947095871F, 120.000450134277F, PlayerState.StNormal) { 0F },
             createYMadeline(-3703F, -0.173950314522F, 97.500404357910F, PlayerState.StNormal) { 0F }. also { it.frame = 1 },
             createYMadeline(-3703F, -0.298950791359F, 97.500404357910F, PlayerState.StNormal) { 0F }. also { it.frame = 1 },
             createYMadeline(-3703F, -0.423951148987F, 97.500404357910F, PlayerState.StNormal) { 0F }. also { it.frame = 1 },
@@ -21,6 +21,11 @@ fun main() {
             Target(-0.156855210662F, -0.156848177314F, -3696F),
             Target(0.014712393284F, 0.014719247818F, - 3698F)
         ), //lambda Madeline -> Bool as success filter
+        listOf(
+            { },
+            { this.ySpeed = -105F; this.updatePosition() },
+            { this.ySpeed = -89.999969482422F; this.updatePosition() },
+        )
     )
 
     //val maddy1flate = createYMadeline(-3703F, -0.173953652382F, 105.000419616699F, PlayerState.StNormal) { 0F }
@@ -51,10 +56,10 @@ fun main() {
     println(solutions.size)
 }
 
-fun simulateAll(startingPositions: List<Madeline>, targets: List<Target>): List<Pair<Pair<Madeline, InputSequence>, Madeline>> {
+fun simulateAll(startingPositions: List<Madeline>, targets: List<Target>, offsets: List<Madeline.() -> Unit>): List<Pair<Pair<Madeline, InputSequence>, Madeline>> {
     val allSolutions = startingPositions.flatMap { startingState ->
         val simulator = Simulator()
-        simulator.simulate(startingState, targets)
+        simulator.simulate(startingState, targets, offsets)
         simulator.solutions.map { it.value to startingState }
     }
 
