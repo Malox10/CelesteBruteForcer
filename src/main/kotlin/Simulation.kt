@@ -1,77 +1,65 @@
-
 typealias InputSequence = List<Input>
-data class YData(val yPos: Float, val ySubPixel: Float, val ySpeed: Float, val state: PlayerState)
+data class YData(val yPos: Float, val ySubPixel: Float, val ySpeed: Float)
 
-val solutions: MutableMap<YData, Pair<Madeline, InputSequence>> = mutableMapOf()
+
 val cache: HashSet<YData> = hashSetOf()
-fun simulate(startMadeline: Madeline, target: Target, path: List<Input> = emptyList()) {
-    if(startMadeline.frame >= maxDepth) return
-    if(startMadeline.y > -2435) return
+typealias Solutions = MutableMap<YData, Pair<Madeline, InputSequence>>
+class Simulator() {
+    val solutions: Solutions = mutableMapOf()
+    fun simulate(startMadeline: Madeline, targets: List<Target>, path: List<Input> = emptyList()) {
+        if (startMadeline.frame >= maxDepth) return
+        //if(startMadeline.y > -2435) return
 
-    val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed, startMadeline.state)
-    if(cache.contains(key)) {
-        return
-    } else {
-        cache.add(key)
-        if(startMadeline.yMovementCounter <= target.upperBound && startMadeline.yMovementCounter >= target.lowerBound) {
-            if(path.last() != Input.Grab) {
-                cache.remove(key)
-                return
-            }
-            solutions[key] = startMadeline to path
-            println(startMadeline.yMovementCounter)
-            println(path.toTasFile())
-        }
-    }
-
-
-    val inputs = if(startMadeline.ySpeed < 0F) mutableListOf(Input.None) else when(startMadeline.state) {
-        PlayerState.StClimb -> {
-            if(startMadeline.ySpeed < 15) {
-                listOf(Input.None)
-            } else {
-                listOf(Input.None, Input.Grab)
+        val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed)
+        if (cache.contains(key)) {
+            return
+        } else {
+            cache.add(key)
+            for (target in targets) {
+                if (startMadeline.yMovementCounter <= target.upperBound && startMadeline.yMovementCounter >= target.lowerBound
+                    && startMadeline.y == target.pixel
+                ) {
+                    if (path.last() != Input.Grab) {
+                        Unit
+                    }
+                    solutions[key] = startMadeline to path
+                    println(startMadeline.yMovementCounter)
+                    println(path.toTasFile())
+                    cache.remove(key)
+                    return
+                }
             }
         }
-        else -> {
-            if(startMadeline.frame + 1 > 16) {
-                listOf(Input.None, Input.Grab)
-            } else {
-                listOf(Input.None, Input.Grab, Input.Right)
+
+        val inputs = if (startMadeline.ySpeed < 0F) mutableListOf(Input.None) else when (startMadeline.state) {
+            PlayerState.StClimb -> {
+                if (startMadeline.ySpeed < 15) {
+                    listOf(Input.None)
+                } else {
+                    listOf(Input.None, Input.Grab)
+                }
             }
+
+            else -> {
+                if (startMadeline.frame != 1) {
+                    listOf(Input.None, Input.Grab)
+                } else {
+                    listOf(Input.None, Input.Grab, Input.Right)
+                }
+            }
+        }.toMutableList()
+        if (noGrabFrames.contains(startMadeline.frame + 1)) inputs.remove(Input.Grab)
+
+        inputs.map { input ->
+            val newMadeline = startMadeline.copy()
+            newMadeline.update(input)
+            val newPath = path + listOf(input)
+            simulate(newMadeline, targets, newPath)
         }
-    }.toMutableList()
-
-    val noGrabFrames = setOf(1, 28, 30, 32, 34, 36, 37, 39)
-    if(noGrabFrames.contains(startMadeline.frame + 1)) inputs.remove(Input.Grab)
-
-//    val inputMap = listOf(
-//        Input.None, Input.None,
-//        Input.Right, Input.Right,
-//        Input.None, Input.None, Input.None, Input.None,
-//        Input.Right, Input.Right, Input.Right,
-//        Input.None, Input.None,
-//        Input.Grab,
-//        Input.None, Input.None, Input.None,
-//        Input.Grab,
-//        Input.None, Input.None, Input.None, Input.None,
-//        Input.Grab,
-//        Input.None, Input.None, Input.None,
-//        Input.Grab,
-//        Input.None,
-//        Input.Grab,
-//    ).mapIndexed { index, value -> index to value }.associate { it }
-//inputMap[startMadeline.frame]!!
-
-    inputs.map { input ->
-        val newMadeline = startMadeline.copy()
-        newMadeline.update(input)
-        val newPath = path + listOf(input)
-        simulate(newMadeline, target, newPath)
     }
 }
 
-class Target(lowerBoundParam: Float, upperBoundParam: Float) {
+class Target(lowerBoundParam: Float, upperBoundParam: Float, val pixel: Float) {
     val upperBound: Float
     val lowerBound: Float
 

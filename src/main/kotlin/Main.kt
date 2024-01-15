@@ -1,33 +1,73 @@
 import kotlin.math.sign
 
-const val maxDepth = 35
+const val maxDepth = 30
+val noGrabFrames = setOf(12, 16, 20, 24, 28, 32, 36)
 fun main() {
-    simulate(
-//        createYMadeline(-2440F, 0.016839504242F, 41.000026702881F, PlayerState.StClimb) { frame ->
-        createYMadeline(-2447F, 0.233488678932F, 39.000022888184F, PlayerState.StClimb) { frame ->
-            when {
-                frame < 20 -> -40F
-                frame == 20 -> -29.990854263306F
-                frame > 20 -> 0F
-
-                else -> error("how?")
-            }
-        },
-//        Target(-0.080259978771F, -0.080258071423F), //lambda Madeline -> Bool as success filter
-        Target(-0.080241680145F, -0.080237865448F), //lambda Madeline -> Bool as success filter
+    val solutions = simulateAll(
+        listOf(
+            createYMadeline(-3701F, 0.673947572708F, 120.000450134277F, PlayerState.StNormal) { 0F },
+            createYMadeline(-3702F, 0.923952579498F, 112.500434875488F, PlayerState.StNormal) { 0F },
+            createYMadeline(-3703F, -0.048953175544F, 105.000419616699F, PlayerState.StNormal) { 0F },
+            createYMadeline(-3703F, -0.298954129219F, 105.000419616699F, PlayerState.StNormal) { 0F },
+            createYMadeline(-3703F, -0.173953652382F, 105.000419616699F, PlayerState.StNormal) { 0F },
+        ),
+        listOf(
+            Target(-0.328422635794F, -0.328415542841F, -3692F),
+            Target(-0.156855210662F, -0.156848177314F, -3696F)
+        ), //lambda Madeline -> Bool as success filter
     )
-    solutions.map { it }.sortedBy { it.value.second.size }.forEach { (key, value) ->
-        println(key)
-        value.first.printExact()
-        println(value.second)
+
+    //val maddy1flate = createYMadeline(-3703F, -0.173953652382F, 105.000419616699F, PlayerState.StNormal) { 0F }
+//    simulate(
+////        createYMadeline(-3701F, 0.673947572708F, 120.000450134277F, PlayerState.StNormal) { 0F },
+////        createYMadeline(-3702F, 0.923952579498F, 112.500434875488F, PlayerState.StNormal) { 0F },
+////        createYMadeline(-3703F, -0.048953175544F, 105.000419616699F, PlayerState.StNormal) { 0F },
+////        createYMadeline(-3703F, -0.298954129219F, 105.000419616699F, PlayerState.StNormal) { 0F },
+//        createYMadeline(-3703F, -0.173953652382F, 105.000419616699F, PlayerState.StNormal) { 0F },
+//        listOf(
+//            Target(-0.328422635794F, -0.328415542841F, -3692F),
+//            Target(-0.156855210662F, -0.156848177314F, - 3696F)
+//        ), //lambda Madeline -> Bool as success filter
+//    )
+
+    solutions.map { it }.sortedBy { it.first.second.size }.forEach { (solution, start) ->
+        val (end, sequence) = solution
+        println(end)
+        end.printExact()
+        println(sequence)
         println()
-        println("steps taken: ${value.second.size}")
-        println(value.second.toTasFile())
+        println("steps taken: ${sequence.size}")
+        println(sequence.toTasFile())
+        println("With Initial Condition: $start")
+        println()
     }
 
     println(solutions.size)
 }
 
+fun simulateAll(startingPositions: List<Madeline>, targets: List<Target>): List<Pair<Pair<Madeline, InputSequence>, Madeline>> {
+    val allSolutions = startingPositions.flatMap { startingState ->
+        val simulator = Simulator()
+        simulator.simulate(startingState, targets)
+        simulator.solutions.map { it.value to startingState }
+    }
+
+    return allSolutions
+}
+
+
+/*
+initial conditions:
+createYMadeline(-3701F, 0.673947572708F, 120.000450134277F, PlayerState.StNormal) { 0F },
+createYMadeline(-3703F, 0.923952579498F, 112.500434875488F, PlayerState.StNormal) { 0F },
+
+targets:
+Target(-0.328422635794F, -0.328415542841F, -3693F)
+Target(-0.156855210662, -0.156848177314F, - 3696F)
+ */
+
+
+/*
 fun secondWorldAbyssSaveWIP() {
     simulate(
         createYMadeline(-3702F, 0.411834239960F, 112.500434875488F, PlayerState.StNormal),
@@ -43,6 +83,8 @@ fun firstWorldAbyssSave() {
         Target(0.639446F, 0.6397066F), //lambda Madeline -> Bool as success filter
     )
 }
+
+ */
 
 fun List<Input>.toTasFile(): String {
     val output = mutableListOf<String>("--- TAS starts here ---")
