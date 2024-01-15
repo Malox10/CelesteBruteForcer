@@ -10,10 +10,16 @@ fun main() {
             createYMadeline(-3703F, -0.048953175544F, 105.000419616699F, PlayerState.StNormal) { 0F },
             createYMadeline(-3703F, -0.298954129219F, 105.000419616699F, PlayerState.StNormal) { 0F },
             createYMadeline(-3703F, -0.173953652382F, 105.000419616699F, PlayerState.StNormal) { 0F },
+            createYMadeline(-3701F, 0.548947095871F, 120.000450134277F, PlayerState.StNormal) { 0F },
+            createYMadeline(-3703F, -0.173950314522F, 97.500404357910F, PlayerState.StNormal) { 0F }. also { it.frame = 1 },
+            createYMadeline(-3703F, -0.298950791359F, 97.500404357910F, PlayerState.StNormal) { 0F }. also { it.frame = 1 },
+            createYMadeline(-3703F, -0.423951148987F, 97.500404357910F, PlayerState.StNormal) { 0F }. also { it.frame = 1 },
+            createYMadeline(-3702F, -0.798944950104F, 90.000389099121F, PlayerState.StNormal) { 0F }. also { it.frame = 2 },
         ),
         listOf(
             Target(-0.328422635794F, -0.328415542841F, -3692F),
-            Target(-0.156855210662F, -0.156848177314F, -3696F)
+            Target(-0.156855210662F, -0.156848177314F, -3696F),
+            Target(0.014712393284F, 0.014719247818F, - 3698F)
         ), //lambda Madeline -> Bool as success filter
         listOf(
             { },
