@@ -27,7 +27,6 @@ class Simulator() {
 //                        }
                         solutions[key] = movedMadeline to path
                         println(movedMadeline.yMovementCounter)
-                        println(path.toTasFile())
                         cache.remove(key)
                         return
                     }

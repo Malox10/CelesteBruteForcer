@@ -17,6 +17,7 @@ data class Madeline(
     var yLiftboost: (Int) -> Float = { 0F },
     var frame: Int = 0,
     var wallSlideTimer: Float = 1.2F,
+    var InitialInputs: String = "empty"
 ) {
     fun updateWallSlideTimer(): Float {
         val target = lerp(160F, 20F, wallSlideTimer / 1.2F)
