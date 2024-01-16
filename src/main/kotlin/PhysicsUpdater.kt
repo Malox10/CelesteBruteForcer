@@ -28,8 +28,14 @@ fun Madeline.moveV(amount: Float) {
 fun handleGrab(madeline: Madeline) {
     when(madeline.state) {
         PlayerState.StClimb -> {
+            // hard coded
+            if (madeline.y < -3696) {
+                madeline.ySpeed = 30F
+                madeline.state = PlayerState.StClimb
+            } else {
             madeline.ySpeed = approach(madeline.ySpeed, 00F, 900f * EngineDeltaTime)
             madeline.state = PlayerState.StClimb
+            }
         }
         PlayerState.StNormal -> {
             //can only grab if falling down or zero speed; then approach maxFall

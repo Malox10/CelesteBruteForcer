@@ -17,6 +17,8 @@ fun main() {
             also { it.InitialInputs = "\n 1LJ,\n 2,\n 1R,\n 1LJ,\n 15L" },
             createYMadeline(-3703F, -0.090609192848F, 120.000450134277F, PlayerState.StNormal) { 0F }. also { it.frame = 2 }.
             also { it.InitialInputs = "\n 1LJ,\n 2,\n 1R,\n 1L,\n 1LJ,\n 15L" },
+            createYMadeline(-3701F, 0.999935626984F, 120.000450134277F, PlayerState.StNormal) { 0F }. also { it.frame = 1 }.
+            also { it.InitialInputs = "\nLong2 \n 1R,\n 1LJ,\n 15L" },
 
             createYMadeline(-3702F, 0.923952579498F, 112.500434875488F, PlayerState.StNormal) { 0F }.
             also { it.InitialInputs = "\n 1L,\n 1,\n 1R,\n 1LJ,\n 5L,\n 1LJ,\n 9L" },
@@ -30,6 +32,16 @@ fun main() {
             also { it.InitialInputs = "\n 1L,\n 1,\n 1R,\n 1LJ,\n 9L,\n 1LJ,\n 5L" },
             createYMadeline(-3702F, -0.298950314522F, 112.500434875488F, PlayerState.StNormal) { 0F }.
             also { it.InitialInputs = "\n 1LJ,\n 1,\n 1R,\n 1LJ,\n 9L,\n 1LJ,\n 5L" },
+            createYMadeline(-3702F, 0.749938964844F, 112.500434875488F, PlayerState.StNormal) { 0F }. also { it.frame = 1 }.
+            also { it.InitialInputs = "\nLong2 \n 1R,\n 1LJ,\n 9L,\n 1LJ,\n 5L" },
+            createYMadeline(-3702F, 0.874939441681F, 112.500434875488F, PlayerState.StNormal) { 0F }. also { it.frame = 1 }.
+            also { it.InitialInputs = "\nLong2 \n 1R,\n 1LJ,\n 8L,\n 1LJ,\n 6L" },
+            createYMadeline(-3702F, 0.999939918518F, 112.500434875488F, PlayerState.StNormal) { 0F }. also { it.frame = 1 }.
+            also { it.InitialInputs = "\nLong2 \n 1R,\n 1LJ,\n 7L,\n 1LJ,\n 7L" },
+            createYMadeline(-3703F, -0.124940395355F, 112.500434875488F, PlayerState.StNormal) { 0F }. also { it.frame = 1 }.
+            also { it.InitialInputs = "\nLong2 \n 1R,\n 1LJ,\n 6L,\n 1LJ,\n 8L" },
+            createYMadeline(-3703F, -0.249940991402F, 112.500434875488F, PlayerState.StNormal) { 0F }. also { it.frame = 1 }.
+            also { it.InitialInputs = "\nLong2 \n 1R,\n 1LJ,\n 5L,\n 1LJ,\n 9L" },
 
             createYMadeline(-3703F, -0.048953175544F, 105.000419616699F, PlayerState.StNormal) { 0F }.
             also { it.InitialInputs = "\n 1L,\n 1,\n 1R,\n 1LJ,\n 9L,\n 2LJ,\n 4L" },
@@ -41,6 +53,10 @@ fun main() {
             also { it.InitialInputs = "\n 1L,\n 1,\n 1R,\n 1LJ,\n 7L,\n 1LJ,\n 1L,\n 1LJ,\n 5L" },
             createYMadeline(-3702F, 0.548947572708F, 105.000419616699F, PlayerState.StNormal) { 0F }. also { it.frame = 1 }.
             also { it.InitialInputs = "\n 1Lj,\n 1,\n 1R,\n 2L,\n 1LJ,\n 14L" },
+            createYMadeline(-3703F, -0.374941349030F, 105.000419616699F, PlayerState.StNormal) { 0F }. also { it.frame = 1 }.
+            also { it.InitialInputs = "\nLong2 \n 1R,\n 1LJ,\n 9L,\n 2LJ,\n 4L" },
+            createYMadeline(-3703F, -0.499941825866F, 105.000419616699F, PlayerState.StNormal) { 0F }. also { it.frame = 1 }.
+            also { it.InitialInputs = "\nLong2 \n 1R,\n 1LJ,\n 8L,\n 1LJ,\n 1L,\n 1LJ,\n 4L" },
 
             createYMadeline(-3703F, -0.173950314522F, 97.500404357910F, PlayerState.StNormal) { 0F }. also { it.frame = 1 }.
             also { it.InitialInputs = "\n 1LJ,\n 1,\n 1R,\n 2L,\n 1LJ,\n 9L,\n 1LJ,\n 4L" },
