@@ -1,21 +1,11 @@
 import kotlin.math.abs
 import kotlin.math.sign
 
-const val maxDepth: Int = 21
-val noGrabFrames: Set<Int> = setOf()
-val noSlideFrames: Set<Int> = setOf()
 fun main() {
     val solutions = simulateAll(
-        listOf(
-            createYMadeline(-3695F, -0.274893701076F, 0F, PlayerState.StClimb)
-        )
-        ,
-        listOf(
-            Target(-0.70001F,-0.70002F,  355F)
-        ),
-        listOf(
-            { },
-        )
+        Config.initialConditions,
+        Config.targets,
+        Config.offsets
     )
     printSolutions(solutions)
     println("Number of solutions found: ${solutions.size}")

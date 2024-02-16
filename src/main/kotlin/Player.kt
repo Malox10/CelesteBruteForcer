@@ -26,24 +26,8 @@ data class Madeline(
     }
 
     fun printExact() {
-        val actualXMovementCounter = if(xMovementCounter < 0) xMovementCounter + 1 else xMovementCounter
-        val actualX = if(xMovementCounter < 0) x - 1 else x
-
-        val actualYMovementCounter = if(yMovementCounter < 0) yMovementCounter + 1 else yMovementCounter
-        val actualY = if(yMovementCounter < 0) y - 1 else y
-
-        //val newY = y + yMovementCounter
-        //val newYMovementCounter = if(newY < 0) {
-        //    1F - yMovementCounter
-        //} else {
-        //    yMovementCounter
-        //}
-
         println("double y: ${y.toDouble() + yMovementCounter.toDouble()}")
-        // println("x: ${(actualX - actualXMovementCounter).toInt()}" + String.format("%.12f", actualXMovementCounter).toCharArray().map { it }.drop(1).toCharArray().concatToString())
-        //println("y: ${newY.toInt()} ySubPixel: " + String.format("%.12f", newYMovementCounter))//.toCharArray().map { it }.drop(1).toCharArray().concatToString())
-        println("y: ${y.toInt()} ySubPixel: " + String.format("%.12f", yMovementCounter))//.toCharArray().map { it }.drop(1).toCharArray().concatToString())
-        // print("xSpeed: "); xSpeed.printAccurate()
+        println("yPixel: ${y.toInt()} yMovementCounter: " + String.format("%.12f", yMovementCounter))//.toCharArray().map { it }.drop(1).toCharArray().concatToString())
         print("ySpeed: "); ySpeed.printAccurate()
         print("state: "); println(state)
     }

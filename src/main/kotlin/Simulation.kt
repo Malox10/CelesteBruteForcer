@@ -10,7 +10,7 @@ typealias Solutions = MutableMap<YData, Pair<Madeline, InputSequence>>
 class Simulator() {
     val solutions: Solutions = mutableMapOf()
     fun simulate(startMadeline: Madeline, targets: List<Target>, additionalMoves: List<Madeline.() -> Unit>, path: List<Input> = emptyList()) {
-        if (startMadeline.frame >= maxDepth) return
+        if (startMadeline.frame >= Config.maxDepth) return
 
         val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed)
         if (cache.contains(key) && startMadeline.frame != 1) {
@@ -20,9 +20,7 @@ class Simulator() {
             for (target in targets) {
                 for (additionalMove in additionalMoves) {
                     val movedMadeline = startMadeline.copy().also(additionalMove)
-                    if (target.contains(movedMadeline.yMovementCounter)
-                         // && movedMadeline.y == target.pixel
-                    ) {
+                    if (checkIfSolution(target, movedMadeline, path)) {
                         solutions[key] = movedMadeline to path
                         println(movedMadeline.yMovementCounter)
                         cache.remove(key)
@@ -46,8 +44,8 @@ class Simulator() {
             }
 
         }.toMutableList()
-        if (noGrabFrames.contains(startMadeline.frame + 1)) inputs.remove(Input.Grab)
-        if (noSlideFrames.contains(startMadeline.frame + 1)) inputs.remove(Input.Right)
+        if (Config.noGrabFrames.contains(startMadeline.frame + 1)) inputs.remove(Input.Grab)
+        if (Config.noSlideFrames.contains(startMadeline.frame + 1)) inputs.remove(Input.Right)
 
         inputs.map { input ->
             val newMadeline = startMadeline.copy()
@@ -55,6 +53,16 @@ class Simulator() {
             val newPath = path + listOf(input)
             simulate(newMadeline, targets, additionalMoves, newPath)
         }
+    }
+
+    fun checkIfSolution(target: Target, madeline: Madeline, path: List<Input>): Boolean {
+        if (!target.contains(madeline.yMovementCounter)) {
+            return false
+        }
+        if (Config.endWithGrab && path.last() != Input.Grab && madeline.ySpeed <= 15F) {
+            return false
+        }
+        return true
     }
 }
 
