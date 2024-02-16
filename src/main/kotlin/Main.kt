@@ -11,7 +11,7 @@ fun main() {
     println("Number of solutions found: ${solutions.size}")
 }
 
-fun printSolutions(solutions: List<Pair<Pair<Madeline, InputSequence>, Madeline>>): Unit {
+fun printSolutions(solutions: List<Pair<Pair<Madeline, InputSequence>, Madeline>>) {
     solutions.map { it }.sortedBy { it.first.second.size }.forEach { (solution, start) ->
         val (end, sequence) = solution
         println(end)

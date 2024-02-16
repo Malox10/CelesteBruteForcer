@@ -66,7 +66,7 @@ class Simulator() {
     }
 }
 
-class Target(lowerBoundParam: Float, upperBoundParam: Float, val pixel: Float) {
+class Target(lowerBoundParam: Float, upperBoundParam: Float, pixel: Float) {
     var upperBoundYMovementCounter: Float
     var lowerBoundYMovementCounter: Float
 
