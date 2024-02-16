@@ -10,7 +10,7 @@ typealias Solutions = MutableMap<YData, Pair<Madeline, InputSequence>>
 class Simulator() {
     val solutions: Solutions = mutableMapOf()
     fun simulate(startMadeline: Madeline, targets: List<Target>, additionalMoves: List<Madeline.() -> Unit>, path: List<Input> = emptyList()) {
-        if (startMadeline.frame >= Config.maxDepth) return
+        if (startMadeline.frame > Config.maxDepth) return
 
         val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed)
         if (cache.contains(key) && startMadeline.frame != 1) {
@@ -22,7 +22,7 @@ class Simulator() {
                     val movedMadeline = startMadeline.copy().also(additionalMove)
                     if (checkIfSolution(target, movedMadeline, path)) {
                         solutions[key] = movedMadeline to path
-                        println(movedMadeline.yMovementCounter)
+                        // println(movedMadeline.yMovementCounter)
                         cache.remove(key)
                         return
                     }
@@ -62,7 +62,7 @@ class Simulator() {
         if (Config.endWithGrab && path.last() != Input.Grab && madeline.ySpeed <= 15F) {
             return false
         }
-        if (Config.solutionSetting == SolutionSetting.Exact && target.YPixel != madeline.y) {
+        if (Config.solutionSetting == SolutionSetting.ExactPosition && target.YPixel != madeline.y) {
             return false
         }
         return true

@@ -14,12 +14,9 @@ fun main() {
 fun printSolutions(solutions: List<Pair<Pair<Madeline, InputSequence>, Madeline>>) {
     solutions.map { it }.sortedBy { it.first.second.size }.forEach { (solution, start) ->
         val (end, sequence) = solution
-        println(end)
         end.printExact()
         println(sequence)
         println()
-        println("steps taken: ${sequence.size}")
-        println(sequence.toTasFile())
         println(
             "With Initial Condition:\n" +
                     "YSpeed: ${start.ySpeed}, " +
@@ -27,6 +24,9 @@ fun printSolutions(solutions: List<Pair<Pair<Madeline, InputSequence>, Madeline>
                     "YMovementCounter: ${start.yMovementCounter}, " +
                     "InitialInputs: ${start.InitialInputs} "
         )
+        println()
+        println("steps taken: ${sequence.size}")
+        println(sequence.toTasFile())
         println()
     }
 }

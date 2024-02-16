@@ -26,8 +26,8 @@ data class Madeline(
     }
 
     fun printExact() {
-        println("double y: ${y.toDouble() + yMovementCounter.toDouble()}")
         println("yPixel: ${y.toInt()} yMovementCounter: " + String.format("%.12f", yMovementCounter))//.toCharArray().map { it }.drop(1).toCharArray().concatToString())
+        println("InfoHudY: ${y.toDouble() + yMovementCounter.toDouble()}")
         print("ySpeed: "); ySpeed.printAccurate()
         print("state: "); println(state)
     }
