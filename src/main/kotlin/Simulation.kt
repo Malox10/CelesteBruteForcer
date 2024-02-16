@@ -62,6 +62,9 @@ class Simulator() {
         if (Config.endWithGrab && path.last() != Input.Grab && madeline.ySpeed <= 15F) {
             return false
         }
+        if (Config.solutionSetting == SolutionSetting.Exact && target.YPixel != madeline.y) {
+            return false
+        }
         return true
     }
 }
@@ -69,16 +72,15 @@ class Simulator() {
 class Target(lowerBoundParam: Float, upperBoundParam: Float, pixel: Float) {
     var upperBoundYMovementCounter: Float
     var lowerBoundYMovementCounter: Float
+    var YPixel = pixel
 
     init {
         upperBoundYMovementCounter = upperBoundParam
         lowerBoundYMovementCounter = lowerBoundParam
-        var trueYPixel = pixel
-
 
         if (abs(upperBoundParam) > 0.5F) {
             upperBoundYMovementCounter = (1F - abs(upperBoundParam)) * (sign(upperBoundParam) * -1)
-            trueYPixel += sign(upperBoundParam) * 1
+            YPixel += sign(upperBoundParam) * 1
         }
         if (abs(lowerBoundParam) > 0.5F) {
             lowerBoundYMovementCounter = (1F - abs(lowerBoundParam)) * (sign(lowerBoundParam) * -1)
