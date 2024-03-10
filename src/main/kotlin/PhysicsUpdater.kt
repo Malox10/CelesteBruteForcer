@@ -28,6 +28,7 @@ fun Madeline.moveV(amount: Float) {
 fun handleGrab(madeline: Madeline) {
     when(madeline.state) {
         PlayerState.StClimb -> {
+
             madeline.ySpeed = approach(madeline.ySpeed, 00F, 900f * EngineDeltaTime)
             madeline.state = PlayerState.StClimb
         }
