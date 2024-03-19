@@ -1,12 +1,21 @@
 import kotlin.math.roundToInt
 
-fun Madeline.update(input: Input) {
+fun Madeline.update(input: List<Input>) {
     this.frame++
+
+
+    if (input.contains(Input.Grab)) { handleGrab(this, input) }
+    if (input.contains(Input.None)) { handleNone(this, input) }
+    if (input.contains(Input.Right)) { handleRight(this, input) }
+
+    /*
     when(input) {
         Input.Grab -> handleGrab(this)
         Input.None -> handleNone(this)
         Input.Right -> handleRight(this)
     }
+
+     */
 
     this.updatePosition()
 }
@@ -25,12 +34,22 @@ fun Madeline.moveV(amount: Float) {
     }
 }
 
-fun handleGrab(madeline: Madeline) {
+fun handleGrab(madeline: Madeline, input: List<Input>) {
     when(madeline.state) {
         PlayerState.StClimb -> {
 
+            if (madeline.y < -3696) {
+                madeline.ySpeed = 30F
+                madeline.state = PlayerState.StClimb
+            } else {
+                madeline.ySpeed = approach(madeline.ySpeed, 00F, 900f * EngineDeltaTime)
+                madeline.state = PlayerState.StClimb
+            }
+
+            /*
             madeline.ySpeed = approach(madeline.ySpeed, 00F, 900f * EngineDeltaTime)
             madeline.state = PlayerState.StClimb
+             */
         }
         PlayerState.StNormal -> {
             //can only grab if falling down or zero speed; then approach maxFall
@@ -47,7 +66,7 @@ fun handleGrab(madeline: Madeline) {
     }
 }
 
-fun handleNone(madeline: Madeline) {
+fun handleNone(madeline: Madeline, input: List<Input>) {
     when(madeline.state) {
         PlayerState.StClimb -> {
             madeline.state = PlayerState.StNormal
@@ -59,13 +78,17 @@ fun handleNone(madeline: Madeline) {
             }
         }
         PlayerState.StNormal -> {
-            madeline.ySpeed = approach(madeline.ySpeed, maxFall, 900f * EngineDeltaTime)
+            if (input.contains(Input.Jump) && madeline.ySpeed < 40f && madeline.ySpeed > -40f) {
+                madeline.ySpeed = approach(madeline.ySpeed, maxFall, 450f * EngineDeltaTime)
+            } else {
+                madeline.ySpeed = approach(madeline.ySpeed, maxFall, 900f * EngineDeltaTime)
+            }
             madeline.state = PlayerState.StNormal
         }
     }
 }
 
-fun handleRight(madeline: Madeline) {
+fun handleRight(madeline: Madeline, input: List<Input>) {
     when(madeline.state) {
         PlayerState.StClimb -> {
             madeline.state = PlayerState.StNormal

@@ -7,7 +7,7 @@ class GrabTest {
         //x = -1564.467612385750
 //        val madeline = Madeline(0F, 0F, 345F, 0.400036633015F, 0F, 24.000047683716F, state = PlayerState.StClimb)
         val madeline = createYMadeline(345F, 0.400036633015F, 24.000047683716F, PlayerState.StClimb)
-        madeline.update(Input.Grab)
+        madeline.update(listOf(Input.Grab))
 
         val expected = createYMadeline(345F, 0.550037264824F, 9.000018119812F, state = PlayerState.StClimb)
         assertEquals(expected, madeline)
@@ -89,7 +89,7 @@ class IntegrationTest() {
         val madeline = createYMadeline(345F, 0.400036633015F, 24.000047683716F, PlayerState.StClimb)
         listOf(Input.None, Input.Right, Input.Grab).forEachIndexed { index, input ->
             println("input ${index + 1}:")
-            madeline.update(input)
+            madeline.update(listOf(input))
             madeline.printExact()
         }
     }
@@ -106,7 +106,7 @@ class IntegrationTest() {
             Input.Right
         ).forEachIndexed { index, input ->
             println("input ${index + 1}:")
-            madeline.update(input)
+            madeline.update(listOf(input))
             madeline.printExact()
         }
 
@@ -115,25 +115,21 @@ class IntegrationTest() {
     }
 
     @Test
-    fun worldAbyss2Test() {
-        val madeline = createYMadeline(-3701F, 0.838162422180F, 120.000450134277F, PlayerState.StNormal)
+    fun simpleTest1() {
+        val madeline = createYMadeline(-3701F, -0.752329349518F, 120.000450134277F, PlayerState.StNormal) { 0F }.
+        also { it.InitialInputs = "\n 2,\n 1L,\n 1R,\n 1LJ,\n 15L" }. also { it.slowfallHeld = true }
         madeline.yMovementCounter.printAccurate()
 //        madeline.printExact()
 
         listOf(
-            Input.None,
-            Input.None,
             Input.Right,
-            Input.Grab,
-            Input.None,
-            Input.None,
-            Input.None,
             Input.None,
             Input.Grab,
             Input.None,
             Input.None,
             Input.None,
-            Input.Grab, //faulty
+            Input.Grab,
+            Input.None,
             Input.None,
             Input.Grab,
             Input.None,
@@ -141,13 +137,11 @@ class IntegrationTest() {
             Input.Grab,
             Input.None,
             Input.Grab,
-            Input.None,
-            Input.None,
         ).forEachIndexed { index, input ->
-            madeline.update(input)
+            madeline.update(listOf(input))
 
             println("input ${index + 1}:")
-            madeline.yMovementCounter.printAccurate()
+            madeline.printExact()
             println()
 
 //            madeline.yMovementCounter.printAccurate()
@@ -160,7 +154,7 @@ class IntegrationTest() {
         val madeline = createYMadeline(-2440F, 0.016839504242F, 41.000026702881F, PlayerState.StClimb) { -40F }
         listOf(Input.None, Input.Grab, Input.None, Input.Grab, Input.Grab, Input.Grab, Input.Grab, Input.Grab, Input.Right, Input.Right, Input.Right, Input.Right, Input. Grab).forEachIndexed { index, input ->
             println("input ${index + 1}: ${input}")
-            madeline.update(input)
+            madeline.update(listOf(input))
             madeline.printRaw()
         }
     }
@@ -197,7 +191,7 @@ class IntegrationTest() {
             Input.Grab
         ).forEachIndexed { index, input ->
             println("input ${index + 1}: ${input}")
-            madeline.update(input)
+            madeline.update(listOf(input))
             madeline.printRaw()
         }
     }
@@ -231,7 +225,7 @@ class IntegrationTest() {
             Input.Grab,
         ).forEachIndexed { index, input ->
             println("input ${index + 1}: ${input}")
-            madeline.update(input)
+            madeline.update(listOf(input))
             madeline.printRaw()
         }
     }
@@ -272,7 +266,7 @@ class IntegrationTest() {
             Input.Grab,
         ).forEachIndexed { index, input ->
             println("input ${index + 1}: ${input}")
-            madeline.update(input)
+            madeline.update(listOf(input))
             madeline.printRaw()
         }
     }

@@ -17,7 +17,8 @@ data class Madeline(
     var yLiftboost: (Int) -> Float = { 0F },
     var frame: Int = 0,
     var wallSlideTimer: Float = 1.2F,
-    var InitialInputs: String = "empty"
+    var InitialInputs: String = "empty",
+    var slowfallHeld: Boolean = false
 ) {
     fun updateWallSlideTimer(): Float {
         val target = lerp(160F, 20F, wallSlideTimer / 1.2F)
@@ -50,5 +51,6 @@ enum class Input(val TASkey: String) {
     Grab("G"),
     None(""),
     Right("R"),
+    Jump("J")
 //    Left("L")
 }

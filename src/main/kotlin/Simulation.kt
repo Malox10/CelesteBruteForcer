@@ -47,11 +47,27 @@ class Simulator() {
         if (Config.noGrabFrames.contains(startMadeline.frame + 1)) inputs.remove(Input.Grab)
         if (Config.noSlideFrames.contains(startMadeline.frame + 1)) inputs.remove(Input.Right)
 
+
+        //start recursive calls based on input
         inputs.map { input ->
-            val newMadeline = startMadeline.copy()
-            newMadeline.update(input)
-            val newPath = path + listOf(input)
-            simulate(newMadeline, targets, additionalMoves, newPath)
+            if (startMadeline.slowfallHeld) {
+                val newMadeline1 = startMadeline.copy()
+                newMadeline1.update(listOf(input, Input.Jump))
+                val newPath1 = path + listOf(input)
+                simulate(newMadeline1, targets, additionalMoves, newPath1)
+                if (startMadeline.state == PlayerState.StNormal && input == Input.None) {
+                    val newMadeline2 = startMadeline.copy()
+                    newMadeline2.slowfallHeld = false
+                    newMadeline2.update(listOf(input))
+                    val newPath2 = path + listOf(input, Input.Jump)
+                    simulate(newMadeline2, targets, additionalMoves, newPath2)
+                }
+            } else {
+                val newMadeline = startMadeline.copy()
+                newMadeline.update(listOf(input))
+                val newPath = path + listOf(input)
+                simulate(newMadeline, targets, additionalMoves, newPath)
+            }
         }
     }
 
