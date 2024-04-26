@@ -54,3 +54,5 @@ enum class Input(val TASkey: String) {
     Jump("J")
 //    Left("L")
 }
+
+typealias FrameInputs = List<Input>

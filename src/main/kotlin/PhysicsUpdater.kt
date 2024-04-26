@@ -101,7 +101,11 @@ fun handleRight(madeline: Madeline, input: List<Input>) {
         }
         PlayerState.StNormal -> {
             val target = madeline.updateWallSlideTimer()
-            madeline.ySpeed = approach(madeline.ySpeed, target, 900f * EngineDeltaTime)
+            if (input.contains(Input.Jump) && madeline.ySpeed < 40f && madeline.ySpeed > -40f) {
+                madeline.ySpeed = approach(madeline.ySpeed, target, 450f * EngineDeltaTime)
+            } else {
+                madeline.ySpeed = approach(madeline.ySpeed, target, 900f * EngineDeltaTime)
+            }
             madeline.state = PlayerState.StNormal
         }
     }

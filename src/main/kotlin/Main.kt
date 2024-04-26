@@ -35,28 +35,45 @@ fun simulateAll(startingPositions: List<Madeline>, targets: List<Target>, offset
     val allSolutions = startingPositions.flatMap { startingState ->
         val simulator = Simulator()
         simulator.simulate(startingState, targets, offsets)
+        // consider the option of not using slowfall from the start
+        if (startingState.slowfallHeld) {
+            simulator.simulate(startingState.also { it.slowfallHeld = false }, targets, offsets)
+        }
         simulator.solutions.map { it.value to startingState }
     }
 
     return allSolutions
 }
 
-fun List<Input>.toTasFile(): String {
+fun List<FrameInputs>.toTasFile(): String {
     val output = mutableListOf<String>("--- TAS starts here ---")
 
     var counter = 1
-    var lastInput: Input = this.first()
-    for (input in this.drop(1)) {
-        if (input == lastInput) {
+    var lastInput: FrameInputs = this.first()
+    for (frameInputs in this.drop(1)) {
+        if (frameInputs == lastInput) {
             counter++
         } else {
-            output.add("$counter, ${lastInput.TASkey}")
+            //output.add("$counter, ${lastInput.TASkey}")
+            var tasInputLine = "$counter"
+            for (input in lastInput) {
+                if (input != Input.None) {
+                    tasInputLine += ",${input.TASkey}"
+                }
+            }
+            output.add(tasInputLine)
             counter = 1
-            lastInput = input
+            lastInput = frameInputs
         }
     }
 
-    output.add("$counter, ${lastInput.TASkey}")
+    var tasInputLine = "$counter"
+    for (input in lastInput) {
+        if (input != Input.None) {
+            tasInputLine += ",${input.TASkey}"
+        }
+    }
+    output.add(tasInputLine)
     output.add("--- TAS ends here ---")
     return output.joinToString("\n")
 }
