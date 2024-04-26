@@ -1,5 +1,5 @@
 object Config {
-    // this is an example initial condition with y = -3695.274893701076 as InfoHud value
+    // this is an example initial condition with y = 93.750072956085 as InfoHud value
     val initialConditions: List<Madeline> = listOf(
 
         createYMadeline(93F, 0.750072956085F, 105.000419616699F, PlayerState.StNormal) { 0F }.
