@@ -2,7 +2,7 @@ import kotlin.math.abs
 import kotlin.math.sign
 
 typealias InputSequence = List<FrameInputs>
-data class YData(val yPos: Float, val ySubPixel: Float, val ySpeed: Float)
+data class YData(val yPos: Float, val ySubPixel: Float, val ySpeed: Float, val slowfall: Boolean)
 
 
 val cache: HashSet<YData> = hashSetOf()
@@ -12,7 +12,7 @@ class Simulator() {
     fun simulate(startMadeline: Madeline, targets: List<Target>, additionalMoves: List<Madeline.() -> Unit>, path: List<FrameInputs> = emptyList()) {
         if (startMadeline.frame > Config.maxDepth) return
 
-        val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed)
+        val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed, startMadeline.slowfallHeld)
         if (cache.contains(key) && startMadeline.frame != 1) {
             return
         } else {

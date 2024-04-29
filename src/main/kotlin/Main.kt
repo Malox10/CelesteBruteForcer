@@ -34,11 +34,11 @@ fun printSolutions(solutions: List<Pair<Pair<Madeline, InputSequence>, Madeline>
 fun simulateAll(startingPositions: List<Madeline>, targets: List<Target>, offsets: List<Madeline.() -> Unit>): List<Pair<Pair<Madeline, InputSequence>, Madeline>> {
     val allSolutions = startingPositions.flatMap { startingState ->
         val simulator = Simulator()
-        simulator.simulate(startingState, targets, offsets)
         // consider the option of not using slowfall from the start
         if (startingState.slowfallHeld) {
-            simulator.simulate(startingState.also { it.slowfallHeld = false }, targets, offsets)
+            simulator.simulate(startingState.copy().also { it.slowfallHeld = false }, targets, offsets)
         }
+        simulator.simulate(startingState, targets, offsets)
         simulator.solutions.map { it.value to startingState }
     }
 
