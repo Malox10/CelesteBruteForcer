@@ -2,7 +2,12 @@ import kotlin.math.abs
 import kotlin.math.sign
 
 typealias InputSequence = List<FrameInputs>
-data class YData(val yPos: Float, val ySubPixel: Float, val ySpeed: Float, val slowfall: Boolean)
+
+// for smart caching
+//data class YData(val yPos: Float, val ySubPixel: Float, val ySpeed: Float, val slowfall: Boolean, val state: PlayerState, val frame: Int)
+
+//for solution caching
+data class YData(val yPos: Float, val ySubPixel: Float, val ySpeed: Float, val state: PlayerState, val frame: Int)
 
 
 val cache: HashSet<YData> = hashSetOf()
@@ -12,7 +17,21 @@ class Simulator() {
     fun simulate(startMadeline: Madeline, targets: List<Target>, additionalMoves: List<Madeline.() -> Unit>, path: List<FrameInputs> = emptyList()) {
         if (startMadeline.frame > Config.maxDepth) return
 
-        val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed, startMadeline.slowfallHeld)
+
+        for (target in targets) {
+            for (additionalMove in additionalMoves) {
+                val movedMadeline = startMadeline.copy().also(additionalMove)
+                if (checkIfSolution(target, movedMadeline, path)) {
+                    val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed, startMadeline.state, startMadeline.frame)
+                    solutions[key] = movedMadeline to path
+                    // println(movedMadeline.yMovementCounter)
+                    return
+                }
+            }
+        }
+
+        /* smart cache solutions
+        val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed, startMadeline.slowfallHeld, startMadeline.state, startMadeline.frame)
         if (cache.contains(key) && startMadeline.frame != 1) {
             return
         } else {
@@ -29,10 +48,11 @@ class Simulator() {
                 }
             }
         }
+         */
 
         val possibleInputs = if (startMadeline.ySpeed < 0F) mutableListOf(Input.None) else when (startMadeline.state) {
             PlayerState.StClimb -> {
-                if (startMadeline.ySpeed < 15) {
+                if (startMadeline.ySpeed == 0F) {
                     listOf(Input.None)
                 } else {
                     listOf(Input.None, Input.Grab)
@@ -40,7 +60,11 @@ class Simulator() {
             }
 
             PlayerState.StNormal -> {
-                listOf(Input.None, Input.Grab, Input.Right)
+                if (startMadeline.ySpeed == 0F) {
+                    listOf(Input.None, Input.Right)
+                } else {
+                    listOf(Input.None, Input.Grab, Input.Right)
+                }
             }
 
         }.toMutableList()
@@ -53,11 +77,12 @@ class Simulator() {
             if (startMadeline.slowfallHeld) {
                 // simulate with jump held
                 val newMadeline1 = startMadeline.copy()
-                newMadeline1.update(listOf( Input.Jump, input))
+                newMadeline1.update(listOf(Input.Jump, input))
                 val newPath1: List<FrameInputs> = path + listOf(listOf(Input.Jump, input))
                 simulate(newMadeline1, targets, additionalMoves, newPath1)
                 // consider releasing jump from here
-                if (startMadeline.state == PlayerState.StNormal && input == Input.None) {
+                if ((startMadeline.state == PlayerState.StNormal && (input != Input.Grab))
+                    || startMadeline.frame == 0) {
                     val newMadeline2 = startMadeline.copy()
                     newMadeline2.slowfallHeld = false
                     newMadeline2.update(listOf(input))

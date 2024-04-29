@@ -35,9 +35,11 @@ fun simulateAll(startingPositions: List<Madeline>, targets: List<Target>, offset
     val allSolutions = startingPositions.flatMap { startingState ->
         val simulator = Simulator()
         // consider the option of not using slowfall from the start
+        /*
         if (startingState.slowfallHeld) {
             simulator.simulate(startingState.copy().also { it.slowfallHeld = false }, targets, offsets)
         }
+         */
         simulator.simulate(startingState, targets, offsets)
         simulator.solutions.map { it.value to startingState }
     }
