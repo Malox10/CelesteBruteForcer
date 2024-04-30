@@ -2,12 +2,15 @@ import kotlin.math.abs
 import kotlin.math.sign
 import kotlin.system.measureTimeMillis
 
+
+const val useConfigFile = true
+val config = if(useConfigFile) parseConfig() else Config()
 fun main() {
     val time = measureTimeMillis {
         simulateAll(
-            Config.initialConditions,
-            Config.targets,
-            Config.offsets
+            config.initialConditions,
+            config.targets,
+            config.offsets
         )
     }
     println("Total runtime in ms: $time")

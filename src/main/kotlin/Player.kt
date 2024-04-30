@@ -1,8 +1,11 @@
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import kotlin.math.max
 
 const val EngineDeltaTime: Float = 0.0166667F
 const val maxFall: Float = 160f
 
+@Serializable
 data class Madeline(
     var x: Float,
     var xMovementCounter: Float = 0F, //should always be between 0.5, this could lead to bugs when initializing custom positions
@@ -42,8 +45,11 @@ data class Madeline(
     }
 }
 
+@Serializable
 enum class PlayerState {
+    @SerialName("StClimb")
     StClimb,
+    @SerialName("StNormal")
     StNormal
 }
 

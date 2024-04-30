@@ -1,0 +1,22 @@
+{
+  "initialConditions": [
+    {
+      "yPosition": "93.750072956085",
+      "ySpeed": 105.000419616699,
+      "state": "StNormal",
+      "slowFallHeld": true
+    }
+  ],
+  "targets": [
+    {
+      "lowerBound": 0.196010157466,
+      "upperBound": 0.196006357670,
+      "pixel": 100
+    }
+  ],
+  "maxDepth": 19,
+  "endWithGrab": false,
+  "solutionSetting": "ExactPosition",
+  "noGrabFrames": [],
+  "noSlideFrames": []
+}

@@ -7,20 +7,20 @@ data class YData(val yPos: Float, val ySubPixel: Float, val ySpeed: Float, val s
 
 typealias Solutions = MutableMap<YData, Pair<Madeline, InputSequence>>
 class Simulator {
-    var solutionCounter = 0
+    private var solutionCounter = 0
     var initialMadeline: Madeline = Madeline(1F, 1F, 1F, 1F, 1F, 1F, PlayerState.StClimb)
     val solutions: Solutions = mutableMapOf()
     fun simulate(startMadeline: Madeline, targets: List<Target>, additionalMoves: List<Madeline.() -> Unit>, path: List<FrameInputs> = emptyList()) {
-        if (startMadeline.frame > Config.MAX_DEPTH) return
+        if (startMadeline.frame > config.maxDepth) return
 
         // too low end-early condition (ignores upwards liftboost!)
-        if (Config.solutionSetting == SolutionSetting.ExactPosition) {
+        if (config.solutionSetting == SolutionSetting.ExactPosition) {
             var tooLow = true
             for (target in targets) {
                 if (!tooLow) { break }
                 for (additionalMove in additionalMoves) {
                     val movedMadeline = startMadeline.copy().also(additionalMove)
-                    if (movedMadeline.y <= target.YPixel) {
+                    if (movedMadeline.y <= target.yPixel) {
                         tooLow = false
                         break
                     }
@@ -67,8 +67,8 @@ class Simulator {
             }
 
         }.toMutableList()
-        if (Config.noGrabFrames.contains(startMadeline.frame + 1)) possibleInputs.remove(Input.Grab)
-        if (Config.noSlideFrames.contains(startMadeline.frame + 1)) possibleInputs.remove(Input.Right)
+        if (config.noGrabFrames.contains(startMadeline.frame + 1)) possibleInputs.remove(Input.Grab)
+        if (config.noSlideFrames.contains(startMadeline.frame + 1)) possibleInputs.remove(Input.Right)
 
 
         //start recursive calls based on input
@@ -97,14 +97,14 @@ class Simulator {
         }
     }
 
-    fun checkIfSolution(target: Target, madeline: Madeline, path: List<FrameInputs>): Boolean {
+    private fun checkIfSolution(target: Target, madeline: Madeline, path: List<FrameInputs>): Boolean {
         if (!target.contains(madeline.yMovementCounter)) {
             return false
         }
-        if (Config.END_WITH_GRAB && (!(path.last().contains(Input.Grab)) || madeline.ySpeed >= 15F)) {
+        if (config.endWithGrab && (!(path.last().contains(Input.Grab)) || madeline.ySpeed >= 15F)) {
             return false
         }
-        if (Config.solutionSetting == SolutionSetting.ExactPosition && target.YPixel != madeline.y) {
+        if (config.solutionSetting == SolutionSetting.ExactPosition && target.yPixel != madeline.y) {
             return false
         }
         return true
@@ -112,9 +112,9 @@ class Simulator {
 }
 
 class Target(lowerBoundParam: Float, upperBoundParam: Float, pixel: Float) {
-    var upperBoundYMovementCounter: Float
-    var lowerBoundYMovementCounter: Float
-    var YPixel = pixel
+    private var upperBoundYMovementCounter: Float
+    private var lowerBoundYMovementCounter: Float
+    var yPixel: Float = pixel
 
     init {
         upperBoundYMovementCounter = upperBoundParam
@@ -122,7 +122,7 @@ class Target(lowerBoundParam: Float, upperBoundParam: Float, pixel: Float) {
 
         if (abs(upperBoundParam) > 0.5F) {
             upperBoundYMovementCounter = (1F - abs(upperBoundParam)) * (sign(upperBoundParam) * -1)
-            YPixel += sign(upperBoundParam) * 1
+            yPixel += sign(upperBoundParam) * 1
         }
         if (abs(lowerBoundParam) > 0.5F) {
             lowerBoundYMovementCounter = (1F - abs(lowerBoundParam)) * (sign(lowerBoundParam) * -1)
