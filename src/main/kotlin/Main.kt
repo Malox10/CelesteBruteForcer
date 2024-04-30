@@ -9,44 +9,45 @@ fun main() {
             Config.targets,
             Config.offsets
         )
-        printSolutions(solutions)
-        println("Number of solutions found: ${solutions.size}")
+        //solutions are now printed during runtime
+        //printSolutions(solutions)
+        //println("Number of solutions found: ${solutions.size}")
     }
     println("Total runtime in ms: $time")
 }
 
 fun printSolutions(solutions: List<Pair<Pair<Madeline, InputSequence>, Madeline>>) {
     solutions.map { it }.sortedBy { it.first.second.size }.forEach { (solution, start) ->
-        val (end, sequence) = solution
-        end.printExact()
-        println(sequence)
-        println()
-        println(
-            "With Initial Condition:\n" +
-                    "YSpeed: ${start.ySpeed}, " +
-                    "YPixel: ${start.y}, " +
-                    "YMovementCounter: ${start.yMovementCounter}, " +
-                    "InitialInputs: ${start.InitialInputs} "
-        )
-        println()
-        println("steps taken: ${sequence.size}")
-        println(sequence.toTasFile())
-        println()
+        printSolution(solution, start)
     }
 }
 
+fun printSolution(solution: Pair<Madeline, InputSequence>, start: Madeline) {
+    val (end, sequence) = solution
+    end.printExact()
+    println(sequence)
+    println()
+    println(
+        "With Initial Condition:\n" +
+                "YSpeed: ${start.ySpeed}, " +
+                "YPixel: ${start.y}, " +
+                "YMovementCounter: ${start.yMovementCounter}, " +
+                "InitialInputs: ${start.InitialInputs} "
+    )
+    println()
+    println("steps taken: ${sequence.size}")
+    println(sequence.toTasFile())
+    println()
+}
+
 fun simulateAll(startingPositions: List<Madeline>, targets: List<Target>, offsets: List<Madeline.() -> Unit>): List<Pair<Pair<Madeline, InputSequence>, Madeline>> {
+    val simulator = Simulator()
     val allSolutions = startingPositions.flatMap { startingState ->
-        val simulator = Simulator()
-        // consider the option of not using slowfall from the start
-        /*
-        if (startingState.slowfallHeld) {
-            simulator.simulate(startingState.copy().also { it.slowfallHeld = false }, targets, offsets)
-        }
-         */
+        simulator.initialMadeline = startingState
         simulator.simulate(startingState, targets, offsets)
         simulator.solutions.map { it.value to startingState }
     }
+    println("Number of unique solutions found: ${simulator.solutions.size}")
 
     return allSolutions
 }

@@ -10,10 +10,11 @@ typealias InputSequence = List<FrameInputs>
 data class YData(val yPos: Float, val ySubPixel: Float, val ySpeed: Float, val state: PlayerState, val frame: Int)
 
 
-var solutionCounter = 0
 val cache: HashSet<YData> = hashSetOf()
 typealias Solutions = MutableMap<YData, Pair<Madeline, InputSequence>>
 class Simulator() {
+    var solutionCounter = 0
+    var initialMadeline: Madeline = Madeline(1F, 1F, 1F, 1F, 1F, 1F, PlayerState.StClimb)
     val solutions: Solutions = mutableMapOf()
     fun simulate(startMadeline: Madeline, targets: List<Target>, additionalMoves: List<Madeline.() -> Unit>, path: List<FrameInputs> = emptyList()) {
         if (startMadeline.frame > Config.maxDepth) return
@@ -44,14 +45,15 @@ class Simulator() {
                     solutions[key] = movedMadeline to path
                     if (oldSolutionSize != solutions.size) {
                         solutionCounter++
-                        println(solutionCounter)
+                        println("SOLUTION $solutionCounter:\n")
+                        printSolution(solutions[key]!!, initialMadeline)
                     }
                     return
                 }
             }
         }
 
-        /* smart cache solutions
+        /* smart cache solutions (causes oom)
         val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed, startMadeline.slowfallHeld, startMadeline.state, startMadeline.frame)
         if (cache.contains(key) && startMadeline.frame != 1) {
             return
