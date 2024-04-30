@@ -9,9 +9,8 @@
   ],
   "targets": [
     {
-      "lowerBound": 0.196010157466,
-      "upperBound": 0.196006357670,
-      "pixel": 100
+      "lowerBound": "100.196010157466",
+      "upperBound": "100.196006357670"
     }
   ],
   "maxDepth": 19,

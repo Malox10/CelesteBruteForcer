@@ -18,7 +18,7 @@ class Config(
 //        Target(0.196010157466F, 0.196006357670F, 100F)
     ),
     // number of frames to bruteforce
-    val maxDepth: Int = 1,
+    val maxDepth: Int = 19,
     // useful if y-pos shouldn't change after manip is over
     val endWithGrab: Boolean = false,
     // target subpixel only or exact position
@@ -81,8 +81,14 @@ class JsonConfig(
     val noSlideFrames: Set<Int> = setOf(),
 ) {
     @Serializable
-    data class TargetJson(val lowerBound: Float, val upperBound: Float, val pixel: Float) {
-        fun toTarget() = Target(lowerBound, upperBound, pixel)
+    data class TargetJson(val lowerBound: String, val upperBound: String) {
+        fun toTarget(): Target {
+            val (lowerBoundPixel, lowerBound) = lowerBound.toPixelAndSubPixel()
+            val (upperBoundPixel, upperBound) = upperBound.toPixelAndSubPixel()
+            if(lowerBoundPixel != upperBoundPixel) error("lowerBound and UpperBound don't share the same Pixel")
+
+            return Target(lowerBound, upperBound, lowerBoundPixel)
+        }
     }
 }
 
@@ -100,4 +106,9 @@ data class JsonYMadeline(
             .also { it.InitialInputs = initialInputs }
             .also { it.slowfallHeld = slowFallHeld }
     }
+}
+
+fun String.toPixelAndSubPixel(): Pair<Float, Float> {
+    val (yString, ySubpixelString) = this.split(".").map { it.trim() }
+    return yString.toFloat() to "0.$ySubpixelString".toFloat()
 }
