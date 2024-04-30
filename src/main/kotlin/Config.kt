@@ -1,3 +1,5 @@
+@file:Suppress("FloatingPointLiteralPrecision")
+
 object Config {
     // this is an example initial condition with y = 93.750072956085 as InfoHud value
     val initialConditions: List<Madeline> = listOf(
@@ -13,27 +15,26 @@ object Config {
 
     )
     // number of frames to bruteforce
-    const val maxDepth: Int = 19
+    const val MAX_DEPTH: Int = 19
     // useful if y-pos shouldn't change after manip is over
-    val endWithGrab = false
+    const val END_WITH_GRAB = false
     // target subpixel only or exact position
     val solutionSetting = SolutionSetting.ExactPosition
 
     // advanced settings
     val noGrabFrames: Set<Int> = setOf() //setOf(13, 17, 21, 25, 29, 33, 37)
     val noSlideFrames: Set<Int> = setOf() //setOf(2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25)
-    val offsets: List<Madeline.() -> Unit> = listOf(
-        { },
-        /*
-        { this.ySpeed = 7.5F; this.updatePosition() },
-        { this.ySpeed = 15F; this.updatePosition() },
-        { this.ySpeed = -105F; this.updatePosition() },
+    val offsets: List<Madeline.() -> Unit> = listOf()
+    /*
+{ this.ySpeed = 7.5F; this.updatePosition() },
+{ this.ySpeed = 15F; this.updatePosition() },
+{ this.ySpeed = -105F; this.updatePosition() },
 
-         */
-        // { this.ySpeed = -89.999969482422F; this.updatePosition() },
-        // { this.ySpeed = -105F; this.updatePosition(); this.updatePosition() },
-        // { this.ySpeed = -105F; this.updatePosition(); this.ySpeed = -89.999969482422F; this.updatePosition() },
-    )
+ */
+    // { this.ySpeed = -89.999969482422F; this.updatePosition() },
+    // { this.ySpeed = -105F; this.updatePosition(); this.updatePosition() },
+    // { this.ySpeed = -105F; this.updatePosition(); this.ySpeed = -89.999969482422F; this.updatePosition() },
+
 }
 
 @Suppress("unused")

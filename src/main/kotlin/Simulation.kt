@@ -11,7 +11,7 @@ class Simulator {
     var initialMadeline: Madeline = Madeline(1F, 1F, 1F, 1F, 1F, 1F, PlayerState.StClimb)
     val solutions: Solutions = mutableMapOf()
     fun simulate(startMadeline: Madeline, targets: List<Target>, additionalMoves: List<Madeline.() -> Unit>, path: List<FrameInputs> = emptyList()) {
-        if (startMadeline.frame > Config.maxDepth) return
+        if (startMadeline.frame > Config.MAX_DEPTH) return
 
         // too low end-early condition (ignores upwards liftboost!)
         if (Config.solutionSetting == SolutionSetting.ExactPosition) {
@@ -101,7 +101,7 @@ class Simulator {
         if (!target.contains(madeline.yMovementCounter)) {
             return false
         }
-        if (Config.endWithGrab && (!(path.last().contains(Input.Grab)) || madeline.ySpeed >= 15F)) {
+        if (Config.END_WITH_GRAB && (!(path.last().contains(Input.Grab)) || madeline.ySpeed >= 15F)) {
             return false
         }
         if (Config.solutionSetting == SolutionSetting.ExactPosition && target.YPixel != madeline.y) {
