@@ -24,7 +24,7 @@ object Config {
     // advanced settings
     val noGrabFrames: Set<Int> = setOf() //setOf(13, 17, 21, 25, 29, 33, 37)
     val noSlideFrames: Set<Int> = setOf() //setOf(2, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25)
-    val offsets: List<Madeline.() -> Unit> = listOf()
+    val offsets: List<Madeline.() -> Unit> = listOf { }
     /*
 { this.ySpeed = 7.5F; this.updatePosition() },
 { this.ySpeed = 15F; this.updatePosition() },

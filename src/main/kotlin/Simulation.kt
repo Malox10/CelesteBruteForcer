@@ -81,7 +81,7 @@ class Simulator {
                 simulate(newMadeline1, targets, additionalMoves, newPath1)
                 // consider releasing jump from here
                 if ((startMadeline.state == PlayerState.StNormal && (input != Input.Grab))
-                    || startMadeline.frame == 0) {
+                    || startMadeline.frame == 0) { // this condition is probably useless
                     val newMadeline2 = startMadeline.copy()
                     newMadeline2.slowfallHeld = false
                     newMadeline2.update(listOf(input))
