@@ -101,8 +101,8 @@ data class JsonYMadeline(
     val slowFallHeld: Boolean = false
 ) {
     fun toMadeline(): Madeline {
-        val (yString, ySubpixelString) = yPosition.split(".").map { it.trim() }
-        return createYMadeline(yString.toFloat(), "0.$ySubpixelString".toFloat(), ySpeed, state)
+        val (yPixel, ySubPixel) = yPosition.toPixelAndSubPixel()
+        return createYMadeline(yPixel, ySubPixel, ySpeed, state)
             .also { it.InitialInputs = initialInputs }
             .also { it.slowfallHeld = slowFallHeld }
     }
