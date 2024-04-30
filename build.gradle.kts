@@ -1,5 +1,5 @@
 plugins {
-    kotlin("jvm") version "1.8.0"
+    kotlin("jvm") version "1.9.23"
     application
 }
 
@@ -19,7 +19,13 @@ tasks.test {
 }
 
 kotlin {
-    jvmToolchain(17)
+    jvmToolchain(21)
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
+    kotlinOptions {
+        jvmTarget = "21"
+    }
 }
 
 application {
