@@ -184,20 +184,19 @@ class MainDebugTest {
         madeline.yMovementCounter.printAccurate()
 
         listOf(
-            Input.Right,
-            Input.Right,
             Input.Grab,
             Input.None,
             Input.None,
-            Input.None,
-            Input.Right,
             Input.Right,
             Input.Grab,
             Input.None,
-            Input.None,
+            Input.Right,
             Input.Grab,
             Input.None,
-            Input.None,
+            Input.Right,
+            Input.Grab,
+            Input.Grab,
+            Input.None
         ).forEachIndexed { index, input ->
             madeline.update(listOf(input, Input.Jump))
 
@@ -206,9 +205,15 @@ class MainDebugTest {
             println()
         }
         listOf(
+            Input.Right,
+            Input.Right,
+            Input.None,
             Input.Grab,
             Input.None,
-            Input.Right
+            Input.Right,
+            Input.None,
+            Input.None,
+            Input.None
         ).forEachIndexed { index, input ->
             madeline.update(listOf(input))
 

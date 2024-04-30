@@ -1,14 +1,18 @@
 import kotlin.math.abs
 import kotlin.math.sign
+import kotlin.system.measureTimeMillis
 
 fun main() {
-    val solutions = simulateAll(
-        Config.initialConditions,
-        Config.targets,
-        Config.offsets
-    )
-    printSolutions(solutions)
-    println("Number of solutions found: ${solutions.size}")
+    val time = measureTimeMillis {
+        val solutions = simulateAll(
+            Config.initialConditions,
+            Config.targets,
+            Config.offsets
+        )
+        printSolutions(solutions)
+        println("Number of solutions found: ${solutions.size}")
+    }
+    println("Total runtime in ms: $time")
 }
 
 fun printSolutions(solutions: List<Pair<Pair<Madeline, InputSequence>, Madeline>>) {

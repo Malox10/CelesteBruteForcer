@@ -10,6 +10,7 @@ typealias InputSequence = List<FrameInputs>
 data class YData(val yPos: Float, val ySubPixel: Float, val ySpeed: Float, val state: PlayerState, val frame: Int)
 
 
+var solutionCounter = 0
 val cache: HashSet<YData> = hashSetOf()
 typealias Solutions = MutableMap<YData, Pair<Madeline, InputSequence>>
 class Simulator() {
@@ -17,14 +18,34 @@ class Simulator() {
     fun simulate(startMadeline: Madeline, targets: List<Target>, additionalMoves: List<Madeline.() -> Unit>, path: List<FrameInputs> = emptyList()) {
         if (startMadeline.frame > Config.maxDepth) return
 
+        // too low end-early condition (ignores upwards liftboost!)
+        if (Config.solutionSetting == SolutionSetting.ExactPosition) {
+            var tooLow = true
+            for (target in targets) {
+                if (!tooLow) { break }
+                for (additionalMove in additionalMoves) {
+                    val movedMadeline = startMadeline.copy().also(additionalMove)
+                    if (movedMadeline.y <= target.YPixel) {
+                        tooLow = false
+                        break
+                    }
+                }
+            }
+            if (tooLow) { return }
+        }
+
 
         for (target in targets) {
             for (additionalMove in additionalMoves) {
                 val movedMadeline = startMadeline.copy().also(additionalMove)
                 if (checkIfSolution(target, movedMadeline, path)) {
                     val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed, startMadeline.state, startMadeline.frame)
+                    val oldSolutionSize = solutions.size
                     solutions[key] = movedMadeline to path
-                    // println(movedMadeline.yMovementCounter)
+                    if (oldSolutionSize != solutions.size) {
+                        solutionCounter++
+                        println(solutionCounter)
+                    }
                     return
                 }
             }

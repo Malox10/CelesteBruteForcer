@@ -13,7 +13,7 @@ object Config {
 
     )
     // number of frames to bruteforce
-    const val maxDepth: Int = 19
+    const val maxDepth: Int = 22
     // useful if y-pos shouldn't change after manip is over
     val endWithGrab = false
     // target subpixel only or exact position
