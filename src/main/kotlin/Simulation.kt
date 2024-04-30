@@ -3,16 +3,10 @@ import kotlin.math.sign
 
 typealias InputSequence = List<FrameInputs>
 
-// for smart caching
-//data class YData(val yPos: Float, val ySubPixel: Float, val ySpeed: Float, val slowfall: Boolean, val state: PlayerState, val frame: Int)
-
-//for solution caching
 data class YData(val yPos: Float, val ySubPixel: Float, val ySpeed: Float, val state: PlayerState, val frame: Int)
 
-
-val cache: HashSet<YData> = hashSetOf()
 typealias Solutions = MutableMap<YData, Pair<Madeline, InputSequence>>
-class Simulator() {
+class Simulator {
     var solutionCounter = 0
     var initialMadeline: Madeline = Madeline(1F, 1F, 1F, 1F, 1F, 1F, PlayerState.StClimb)
     val solutions: Solutions = mutableMapOf()
@@ -41,37 +35,19 @@ class Simulator() {
                 val movedMadeline = startMadeline.copy().also(additionalMove)
                 if (checkIfSolution(target, movedMadeline, path)) {
                     val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed, startMadeline.state, startMadeline.frame)
-                    val oldSolutionSize = solutions.size
-                    solutions[key] = movedMadeline to path
-                    if (oldSolutionSize != solutions.size) {
+
+                    if (!solutions.containsKey(key)) {
+                        val solution = movedMadeline to path
+                        solutions[key] = solution
                         solutionCounter++
                         println("SOLUTION $solutionCounter:\n")
-                        printSolution(solutions[key]!!, initialMadeline)
+                        printSolution(solution, initialMadeline)
                     }
+
                     return
                 }
             }
         }
-
-        /* smart cache solutions (causes oom)
-        val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed, startMadeline.slowfallHeld, startMadeline.state, startMadeline.frame)
-        if (cache.contains(key) && startMadeline.frame != 1) {
-            return
-        } else {
-            cache.add(key)
-            for (target in targets) {
-                for (additionalMove in additionalMoves) {
-                    val movedMadeline = startMadeline.copy().also(additionalMove)
-                    if (checkIfSolution(target, movedMadeline, path)) {
-                        solutions[key] = movedMadeline to path
-                        // println(movedMadeline.yMovementCounter)
-                        cache.remove(key)
-                        return
-                    }
-                }
-            }
-        }
-         */
 
         val possibleInputs = if (startMadeline.ySpeed < 0F) mutableListOf(Input.None) else when (startMadeline.state) {
             PlayerState.StClimb -> {

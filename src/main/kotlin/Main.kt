@@ -4,22 +4,13 @@ import kotlin.system.measureTimeMillis
 
 fun main() {
     val time = measureTimeMillis {
-        val solutions = simulateAll(
+        simulateAll(
             Config.initialConditions,
             Config.targets,
             Config.offsets
         )
-        //solutions are now printed during runtime
-        //printSolutions(solutions)
-        //println("Number of solutions found: ${solutions.size}")
     }
     println("Total runtime in ms: $time")
-}
-
-fun printSolutions(solutions: List<Pair<Pair<Madeline, InputSequence>, Madeline>>) {
-    solutions.map { it }.sortedBy { it.first.second.size }.forEach { (solution, start) ->
-        printSolution(solution, start)
-    }
 }
 
 fun printSolution(solution: Pair<Madeline, InputSequence>, start: Madeline) {
@@ -40,16 +31,14 @@ fun printSolution(solution: Pair<Madeline, InputSequence>, start: Madeline) {
     println()
 }
 
-fun simulateAll(startingPositions: List<Madeline>, targets: List<Target>, offsets: List<Madeline.() -> Unit>): List<Pair<Pair<Madeline, InputSequence>, Madeline>> {
+fun simulateAll(startingPositions: List<Madeline>, targets: List<Target>, offsets: List<Madeline.() -> Unit>) {
     val simulator = Simulator()
-    val allSolutions = startingPositions.flatMap { startingState ->
+    startingPositions.forEach { startingState ->
         simulator.initialMadeline = startingState
         simulator.simulate(startingState, targets, offsets)
-        simulator.solutions.map { it.value to startingState }
+        simulator.solutions.forEach { it.value to startingState }
     }
     println("Number of unique solutions found: ${simulator.solutions.size}")
-
-    return allSolutions
 }
 
 fun List<FrameInputs>.toTasFile(): String {

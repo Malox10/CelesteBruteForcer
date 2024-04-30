@@ -4,8 +4,6 @@ object Config {
 
         createYMadeline(93F, 0.750072956085F, 105.000419616699F, PlayerState.StNormal) { 0F }.
         also { it.InitialInputs = "" }. also { it.slowfallHeld = true },
-        createYMadeline(93F, 0.600072956085F, 105.000419616699F, PlayerState.StNormal) { 0F }.
-        also { it.InitialInputs = "fjdhksdfjl" }. also { it.slowfallHeld = true }
 
     )
     // target ranges can not cut across 0.5
@@ -38,6 +36,7 @@ object Config {
     )
 }
 
+@Suppress("unused")
 enum class SolutionSetting {
     ExactPosition,
     SubpixelOnly
