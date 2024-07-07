@@ -38,8 +38,9 @@ fun handleGrab(madeline: Madeline, input: List<Input>) {
     when(madeline.state) {
         PlayerState.StClimb -> {
 
-            if (madeline.y < -3696) {
-                madeline.ySpeed = 30F
+             if (false) {
+            // if (madeline.y < -3697) {
+                madeline.ySpeed = approach(madeline.ySpeed, 30F, 900f * EngineDeltaTime)
                 madeline.state = PlayerState.StClimb
             } else {
                 madeline.ySpeed = approach(madeline.ySpeed, 00F, 900f * EngineDeltaTime)

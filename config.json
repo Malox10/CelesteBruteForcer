@@ -1,19 +1,19 @@
 {
   "initialConditions": [
     {
-      "yPosition": "93.750072956085",
-      "ySpeed": 105.000419616699,
-      "state": "StNormal",
-      "slowFallHeld": true
+      "yPosition": "-9049.424994766712",
+      "ySpeed": "4.500030040741",
+      "state": "StClimb",
+      "slowFallHeld": false
     }
   ],
   "targets": [
     {
-      "lowerBound": "100.196010157466",
-      "upperBound": "100.196006357670"
+      "lowerBound": "-9046.332614392042",
+      "upperBound": "-9046.332899391651"
     }
   ],
-  "maxDepth": 19,
+  "maxDepth": 15,
   "endWithGrab": false,
   "solutionSetting": "ExactPosition",
   "noGrabFrames": [],

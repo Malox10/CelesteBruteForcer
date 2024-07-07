@@ -16,7 +16,7 @@ fun main() {
     println("Total runtime in ms: $time")
 }
 
-fun printSolution(solution: Pair<Madeline, InputSequence>, start: Madeline) {
+fun printSolution(solution: Pair<Madeline, InputSequence>, start: Madeline, additionalMove: Madeline.() -> Unit) {
     val (end, sequence) = solution
     end.printExact()
     println(sequence)

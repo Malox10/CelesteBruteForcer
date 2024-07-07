@@ -179,23 +179,19 @@ class IntegrationTest() {
 class MainDebugTest {
     @Test
     fun mainDebugTest() {
-        val madeline = createYMadeline(93F, 0.750072956085F, 105.000419616699F, PlayerState.StNormal) { 0F }.
-        also { it.InitialInputs = "" }. also { it.slowfallHeld = true }
+        val madeline = createYMadeline(-3702F, -0.497075915336F, 120.000450134277F, PlayerState.StNormal) { 0F }
+            .also { it.InitialInputs = "\n 10L\n 5LJ" }
+            .also { it.slowfallHeld = true }
         madeline.yMovementCounter.printAccurate()
 
+
         listOf(
+            Input.None,
+            Input.Grab,
             Input.Grab,
             Input.None,
-            Input.None,
-            Input.Right,
             Input.Grab,
             Input.None,
-            Input.Right,
-            Input.Grab,
-            Input.None,
-            Input.Right,
-            Input.Grab,
-            Input.Grab,
             Input.None
         ).forEachIndexed { index, input ->
             madeline.update(listOf(input, Input.Jump))
@@ -204,16 +200,23 @@ class MainDebugTest {
             madeline.printExact()
             println()
         }
+
+
         listOf(
-            Input.Right,
-            Input.Right,
+            Input.None,
+            Input.Grab,
+            Input.Grab,
+            Input.None,
             Input.None,
             Input.Grab,
             Input.None,
-            Input.Right,
             Input.None,
+            Input.Grab,
             Input.None,
-            Input.None
+            Input.Grab,
+            Input.None,
+            Input.Grab,
+
         ).forEachIndexed { index, input ->
             madeline.update(listOf(input))
 

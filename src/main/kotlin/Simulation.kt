@@ -41,7 +41,7 @@ class Simulator {
                         solutions[key] = solution
                         solutionCounter++
                         println("SOLUTION $solutionCounter:\n")
-                        printSolution(solution, initialMadeline)
+                        printSolution(solution, initialMadeline, additionalMove)
                     }
 
                     return
