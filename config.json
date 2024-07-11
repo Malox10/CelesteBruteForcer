@@ -14,7 +14,7 @@
     }
   ],
   "maxDepth": 15,
-  "endWithGrab": false,
+  "endWithGrab": true,
   "solutionSetting": "ExactPosition",
   "noGrabFrames": [],
   "noSlideFrames": []
