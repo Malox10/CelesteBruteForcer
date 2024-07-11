@@ -5,7 +5,7 @@ A tool to bruteforce grab-manip inputs with calculations that reflect Celeste's 
 # Use
 
 Currently, requires an IDE with kotlin support.
-Alternatively contact me on discord "luzid42" (preferably with an already configured .json file)
+Alternatively contact me on discord at "luzid42" (preferably with an already configured .json file)
 
 Edit the config.json file to set up the bruteforcer and run the main() function afterward.
 All solutions will be printed during runtime (unsorted) with information about the initial condition and celeste-studio Inputs.
@@ -22,7 +22,7 @@ All target ranges that you want to manip to.
 
 - maxDepth:
 the maximum length of the input sequence being simulated (in frames).
-Increases runtime exponentially, usual values are between 20 and 25 frames.
+Increases runtime exponentially, usual values are between 15 and 25 frames.
 
 - endWithGrab:
 set to true if you want the manip to end with a grab input and with |y-speed| < 15.
