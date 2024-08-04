@@ -16,8 +16,10 @@ fun main() {
     println("Total runtime in ms: $time")
 }
 
-fun printSolution(solution: Pair<Madeline, InputSequence>, start: Madeline, additionalMove: Madeline.() -> Unit) {
-    val (end, sequence) = solution
+fun printSolution(solution: Solution, additionalMove: Madeline.() -> Unit) {
+    val end = solution.endState
+    val sequence = solution.inputSequence
+    val start = solution.initialMadeline
     end.printExact()
     println(sequence)
     println()
@@ -39,9 +41,35 @@ fun simulateAll(startingPositions: List<Madeline>, targets: List<Target>, offset
     startingPositions.forEach { startingState ->
         simulator.initialMadeline = startingState
         simulator.simulate(startingState, targets, offsets)
-        simulator.solutions.forEach { it.value to startingState }
     }
+    // print results
+    println("----------------- SIMULATION RESULTS -----------------")
+    println()
     println("Number of unique solutions found: ${simulator.solutions.size}")
+    val countingArray: Array<Int> = Array<Int>(config.maxDepth + 1) { 0 }
+    var fastestSolution: Solution? = null
+    simulator.solutions.forEach {
+        val length = it.value.inputSequence.size
+        countingArray[length] += 1
+        if (fastestSolution == null) {
+            fastestSolution = it.value
+        } else {
+            if (length < fastestSolution!!.inputSequence.size) {
+                fastestSolution = it.value
+            }
+        }
+    }
+    if (fastestSolution != null) {
+        println("solution distribution:")
+        for (i in 0..config.maxDepth) {
+            if (countingArray[i] != 0) {
+                println("$i-frame solutions: ${countingArray[i]}")
+            }
+        }
+        println()
+        println("FASTEST SOLUTION FOUND:")
+        printSolution(fastestSolution!!, {})
+    }
 }
 
 fun List<FrameInputs>.toTasFile(): String {

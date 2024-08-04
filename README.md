@@ -42,7 +42,7 @@ The frames during which madeline can't slide along the wall.
 # Recommendations & miscellaneous
 - Initial conditions should be around 5 or more pixels above the target ranges, otherwise
 the bruteforcer will struggle to find solutions if the solutionSetting is set to "ExactPosition". The y-speed and y-position values
-need be copied manually from celeste (or by using "Ctrl + Shift + C" in celeste studio to copy the player data to clipboard)
+need to be copied manually from celeste (or by using "Ctrl + Shift + C" in celeste studio to copy the player data to clipboard)
 - Target range bounds can be determined by adjusting a "Invoke, Player.MoveV, " command in celeste studio manually.
 Usually, finding the first 1 or 2 differing decimal places between upper and lower bound should be enough to find decent solutions.
 - In simple cases with a static wall and more than 30f to manip I recommend using the most convenient settings

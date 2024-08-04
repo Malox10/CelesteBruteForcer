@@ -4,8 +4,10 @@ import kotlin.math.sign
 typealias InputSequence = List<FrameInputs>
 
 data class YData(val yPos: Float, val ySubPixel: Float, val ySpeed: Float, val state: PlayerState, val frame: Int)
+data class Solution(val endState: Madeline, val inputSequence: InputSequence, val initialMadeline: Madeline)
 
-typealias Solutions = MutableMap<YData, Pair<Madeline, InputSequence>>
+typealias Solutions = MutableMap<YData, Solution>
+
 class Simulator {
     private var solutionCounter = 0
     var initialMadeline: Madeline = Madeline(1F, 1F, 1F, 1F, 1F, 1F, PlayerState.StClimb)
@@ -37,11 +39,11 @@ class Simulator {
                     val key = YData(startMadeline.y, startMadeline.yMovementCounter, startMadeline.ySpeed, startMadeline.state, startMadeline.frame)
 
                     if (!solutions.containsKey(key)) {
-                        val solution = movedMadeline to path
+                        val solution = Solution(movedMadeline, path, initialMadeline)
                         solutions[key] = solution
                         solutionCounter++
                         println("SOLUTION $solutionCounter:\n")
-                        printSolution(solution, initialMadeline, additionalMove)
+                        printSolution(solution, additionalMove)
                     }
 
                     return
