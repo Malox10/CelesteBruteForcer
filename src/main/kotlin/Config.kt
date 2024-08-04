@@ -114,7 +114,8 @@ data class JsonYMadeline(
 }
 
 fun String.toPixelAndSubPixel(): Pair<Float, Float> {
-    if (!this.contains(".")) error("y-position values from initial conditions need a decimal point, add .0 at the end.")
-    val (yString, ySubpixelString) = this.split(".").map { it.trim() }
+    var str = this
+    if (!this.contains(".")) { str = str + ".0" }
+    val (yString, ySubpixelString) = str.split(".").map { it.trim() }
     return yString.toFloat() to "0.$ySubpixelString".toFloat()
 }
