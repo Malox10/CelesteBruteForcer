@@ -9,6 +9,7 @@ Alternatively contact me on discord at "luzid42" (preferably with an already con
 
 Edit the config.json file to set up the bruteforcer and run the main() function afterward.
 All solutions will be printed during runtime (unsorted) with information about the initial condition and celeste-studio Inputs.
+At the end of the simulation the fastest solution will be printed again together with the solution-distribution.
 
 # config.json settings explanation
 
