@@ -31,6 +31,11 @@ fun Madeline.moveV(amount: Float) {
     if (num != 0) {
         this.yMovementCounter -= num.toFloat()
         this.y += num
+        if (config.yGround != null && this.y > config.yGround) {
+            this.y = config.yGround
+            this.yMovementCounter = 0F
+            this.ySpeed = 0F
+        }
     }
 }
 
@@ -79,10 +84,12 @@ fun handleNone(madeline: Madeline, input: List<Input>) {
             }
         }
         PlayerState.StNormal -> {
-            if (input.contains(Input.Jump) && madeline.ySpeed < 40f && madeline.ySpeed > -40f) {
-                madeline.ySpeed = approach(madeline.ySpeed, maxFall, 450f * EngineDeltaTime)
-            } else {
-                madeline.ySpeed = approach(madeline.ySpeed, maxFall, 900f * EngineDeltaTime)
+            if (madeline.y != config.yGround) {
+                if (input.contains(Input.Jump) && madeline.ySpeed < 40f && madeline.ySpeed > -40f) {
+                    madeline.ySpeed = approach(madeline.ySpeed, maxFall, 450f * EngineDeltaTime)
+                } else {
+                    madeline.ySpeed = approach(madeline.ySpeed, maxFall, 900f * EngineDeltaTime)
+                }
             }
             madeline.state = PlayerState.StNormal
         }
@@ -101,11 +108,13 @@ fun handleRight(madeline: Madeline, input: List<Input>) {
             }
         }
         PlayerState.StNormal -> {
-            val target = madeline.updateWallSlideTimer()
-            if (input.contains(Input.Jump) && madeline.ySpeed < 40f && madeline.ySpeed > -40f) {
-                madeline.ySpeed = approach(madeline.ySpeed, target, 450f * EngineDeltaTime)
-            } else {
-                madeline.ySpeed = approach(madeline.ySpeed, target, 900f * EngineDeltaTime)
+            if (madeline.y != config.yGround) {
+                val target = madeline.updateWallSlideTimer()
+                if (input.contains(Input.Jump) && madeline.ySpeed < 40f && madeline.ySpeed > -40f) {
+                    madeline.ySpeed = approach(madeline.ySpeed, target, 450f * EngineDeltaTime)
+                } else {
+                    madeline.ySpeed = approach(madeline.ySpeed, target, 900f * EngineDeltaTime)
+                }
             }
             madeline.state = PlayerState.StNormal
         }

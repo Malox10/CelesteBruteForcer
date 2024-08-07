@@ -26,6 +26,8 @@ class Config(
     val endWithGrab: Boolean = false,
     // target subpixel only or exact position
     val solutionSetting: SolutionSetting = SolutionSetting.ExactPosition,
+    // y-coordinate of the ground if applicable
+    val yGround: Float? = null,
 
     // advanced settings
     val noGrabFrames: Set<Int> =  setOf(11, 15, 19, 23, 27, 31, 35),
@@ -59,6 +61,7 @@ fun parseConfig(): Config {
         json.maxDepth,
         json.endWithGrab,
         json.solutionSetting,
+        json.yGround?.toFloat(),
         json.noGrabFrames,
         json.noSlideFrames,
         offsets = listOf {}
@@ -73,6 +76,7 @@ class JsonConfig(
     val solutionSetting: SolutionSetting = SolutionSetting.SubpixelOnly,
     val maxDepth: Int = 18,
     val endWithGrab: Boolean = true,
+    val yGround: Int? = null,
     val noGrabFrames: Set<Int> = setOf(),
     val noSlideFrames: Set<Int> = setOf(),
 ) {
