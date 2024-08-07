@@ -33,6 +33,10 @@ This allows to simply hold the last grab input without leaving the target range.
 "ExactPosition" makes sure you end up exactly in a given target range.
 "SubPixelOnly" considers only the subpixel of the target range.
 
+- yGround:
+An integer representing the center of the pixel where Madeline is touching the ground. `null` if not applicable.
+Allows taking into account the physics changes from the ground, including collision.
+
 - noGrabFrames:
 The frames during which madeline can't grab.
 

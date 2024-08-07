@@ -71,6 +71,13 @@ class Simulator {
         }.toMutableList()
         if (config.noGrabFrames.contains(startMadeline.frame + 1)) possibleInputs.remove(Input.Grab)
         if (config.noSlideFrames.contains(startMadeline.frame + 1)) possibleInputs.remove(Input.Right)
+        if (config.yGround == startMadeline.y) {
+            if (startMadeline.ySpeed == 0F) {
+                possibleInputs.clear()
+            } else {
+                possibleInputs.remove(Input.Right)
+            }
+        }
 
 
         //start recursive calls based on input

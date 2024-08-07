@@ -16,6 +16,7 @@
   "maxDepth": 15,
   "endWithGrab": true,
   "solutionSetting": "ExactPosition",
+  "yGround": null,
   "noGrabFrames": [],
   "noSlideFrames": []
 }
