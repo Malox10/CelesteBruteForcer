@@ -3,7 +3,8 @@ import kotlinx.serialization.Serializable
 import kotlin.math.max
 
 const val EngineDeltaTime: Float = 0.0166667F
-const val maxFall: Float = 160f
+const val fallTarget1 = 160f
+const val fallTarget2 = 240f
 
 @Serializable
 data class Madeline(
@@ -21,7 +22,8 @@ data class Madeline(
     var frame: Int = 0,
     var wallSlideTimer: Float = 1.2F,
     var InitialInputs: String = "empty",
-    var slowfallHeld: Boolean = false
+    var slowfallHeld: Boolean = false,
+    var maxFall: Float = 160f
 ) {
     fun updateWallSlideTimer(): Float {
         val target = lerp(160F, 20F, wallSlideTimer / 1.2F)
@@ -57,7 +59,8 @@ enum class Input(val TASkey: String) {
     Grab("G"),
     None(""),
     Right("R"),
-    Jump("J")
+    Jump("J"),
+    Down("D")
 //    Left("L")
 }
 

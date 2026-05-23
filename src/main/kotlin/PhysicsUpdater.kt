@@ -7,6 +7,7 @@ fun Madeline.update(input: List<Input>) {
     if (input.contains(Input.Grab)) { handleGrab(this, input) }
     if (input.contains(Input.None)) { handleNone(this, input) }
     if (input.contains(Input.Right)) { handleRight(this, input) }
+    if (input.contains(Input.Down)) { handleDown(this, input) }
 
     /*
     when(input) {
@@ -43,8 +44,8 @@ fun handleGrab(madeline: Madeline, input: List<Input>) {
     when(madeline.state) {
         PlayerState.StClimb -> {
 
-             if (false) {
-            // if (madeline.y < -3697) {
+            if (false) {
+            //if (madeline.y < 1935) {
                 madeline.ySpeed = approach(madeline.ySpeed, 30F, 900f * EngineDeltaTime)
                 madeline.state = PlayerState.StClimb
             } else {
@@ -58,9 +59,9 @@ fun handleGrab(madeline: Madeline, input: List<Input>) {
              */
         }
         PlayerState.StNormal -> {
-            //can only grab if falling down or zero speed; then approach maxFall
+            //can only grab if falling down or zero speed; then approach madeline.maxFall
             if(madeline.ySpeed < 0F) {
-                madeline.ySpeed = approach(madeline.ySpeed, maxFall, 900f * EngineDeltaTime)
+                madeline.ySpeed = approach(madeline.ySpeed, madeline.maxFall, 900f * EngineDeltaTime)
                 madeline.state = PlayerState.StNormal
                 return
             }
@@ -76,6 +77,7 @@ fun handleNone(madeline: Madeline, input: List<Input>) {
     when(madeline.state) {
         PlayerState.StClimb -> {
             madeline.state = PlayerState.StNormal
+            madeline.maxFall = fallTarget1
 
             //apply liftboost
             val yLiftBoost = madeline.yLiftboost(madeline.frame)
@@ -84,11 +86,12 @@ fun handleNone(madeline: Madeline, input: List<Input>) {
             }
         }
         PlayerState.StNormal -> {
+            madeline.maxFall = approach(madeline.maxFall, fallTarget1, 300f * EngineDeltaTime)
             if (madeline.y != config.yGround) {
                 if (input.contains(Input.Jump) && madeline.ySpeed < 40f && madeline.ySpeed > -40f) {
-                    madeline.ySpeed = approach(madeline.ySpeed, maxFall, 450f * EngineDeltaTime)
+                    madeline.ySpeed = approach(madeline.ySpeed, madeline.maxFall, 450f * EngineDeltaTime)
                 } else {
-                    madeline.ySpeed = approach(madeline.ySpeed, maxFall, 900f * EngineDeltaTime)
+                    madeline.ySpeed = approach(madeline.ySpeed, madeline.maxFall, 900f * EngineDeltaTime)
                 }
             }
             madeline.state = PlayerState.StNormal
@@ -96,10 +99,11 @@ fun handleNone(madeline: Madeline, input: List<Input>) {
     }
 }
 
-fun handleRight(madeline: Madeline, input: List<Input>) {
+fun handleDown(madeline: Madeline, input: List<Input>) {
     when(madeline.state) {
         PlayerState.StClimb -> {
             madeline.state = PlayerState.StNormal
+            madeline.maxFall = fallTarget1
 
             //apply liftboost
             val yLiftBoost = madeline.yLiftboost(madeline.frame)
@@ -108,6 +112,37 @@ fun handleRight(madeline: Madeline, input: List<Input>) {
             }
         }
         PlayerState.StNormal -> {
+            if (madeline.ySpeed >= fallTarget1) {
+                madeline.maxFall = approach(madeline.maxFall, fallTarget2, 300f * EngineDeltaTime)
+            }
+            if (madeline.y != config.yGround) {
+                if (input.contains(Input.Jump) && madeline.ySpeed < 40f && madeline.ySpeed > -40f) {
+                    madeline.ySpeed = approach(madeline.ySpeed, madeline.maxFall, 450f * EngineDeltaTime)
+                } else {
+                    madeline.ySpeed = approach(madeline.ySpeed, madeline.maxFall, 900f * EngineDeltaTime)
+                }
+            }
+            madeline.state = PlayerState.StNormal
+        }
+    }
+}
+
+
+
+fun handleRight(madeline: Madeline, input: List<Input>) {
+    when(madeline.state) {
+        PlayerState.StClimb -> {
+            madeline.state = PlayerState.StNormal
+            madeline.maxFall = fallTarget1
+
+            //apply liftboost
+            val yLiftBoost = madeline.yLiftboost(madeline.frame)
+            if(yLiftBoost != 0F) {
+                madeline.ySpeed += yLiftBoost
+            }
+        }
+        PlayerState.StNormal -> {
+            madeline.maxFall = approach(madeline.maxFall, fallTarget1, 300f * EngineDeltaTime)
             if (madeline.y != config.yGround) {
                 val target = madeline.updateWallSlideTimer()
                 if (input.contains(Input.Jump) && madeline.ySpeed < 40f && madeline.ySpeed > -40f) {

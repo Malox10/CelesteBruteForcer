@@ -64,7 +64,11 @@ class Simulator {
                 if (startMadeline.ySpeed == 0F) {
                     listOf(Input.None, Input.Right)
                 } else {
-                    listOf(Input.None, Input.Grab, Input.Right)
+                    if (startMadeline.ySpeed >= fallTarget1) {
+                        listOf(Input.None, Input.Grab, Input.Right, Input.Down)
+                    } else {
+                        listOf(Input.None, Input.Grab, Input.Right)
+                    }
                 }
             }
 

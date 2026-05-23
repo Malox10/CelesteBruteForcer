@@ -1,21 +1,33 @@
 {
   "initialConditions": [
     {
-      "yPosition": "-9049.424994766712",
-      "ySpeed": "4.500030040741",
-      "state": "StClimb",
-      "slowFallHeld": false
+      "yPosition": "44.558465242386",
+      "ySpeed": "195.000106811523",
+      "state": "StNormal",
+      "slowFallHeld": true
     }
   ],
   "targets": [
     {
-      "lowerBound": "-9046.332614392042",
-      "upperBound": "-9046.332899391651"
+      "lowerBound": "52.024905",
+      "upperBound": "52.024931"
+    },
+    {
+      "lowerBound": "52.274905",
+      "upperBound": "52.274931"
+    },
+    {
+      "lowerBound": "52.524905",
+      "upperBound": "52.524931"
+    },
+    {
+      "lowerBound": "52.774905",
+      "upperBound": "52.774931"
     }
   ],
-  "maxDepth": 15,
-  "endWithGrab": true,
-  "solutionSetting": "ExactPosition",
+  "maxDepth": 13,
+  "endWithGrab": false,
+  "solutionSetting": "SubPixelOnly",
   "yGround": null,
   "noGrabFrames": [],
   "noSlideFrames": []

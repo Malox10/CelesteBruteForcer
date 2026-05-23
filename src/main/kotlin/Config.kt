@@ -114,6 +114,7 @@ data class JsonYMadeline(
         return createYMadeline(yPixel, ySubPixel, ySpeed, state)
             .also { it.InitialInputs = initialInputs }
             .also { it.slowfallHeld = slowFallHeld }
+            .also { if(ySpeed >= fallTarget1) { it.maxFall = ySpeed } }
     }
 }
 
